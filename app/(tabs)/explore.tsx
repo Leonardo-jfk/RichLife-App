@@ -204,6 +204,8 @@ interface Dream {
   currentAmount: number;
   category: string;
   createdAt: string;
+  monthlyContribution?: number; // ← AJOUTER
+  targetDate?: string;
 }
 
 interface Goal {
@@ -214,6 +216,8 @@ interface Goal {
   currentAmount: number;
   monthlySavings: number;
   createdAt: string;
+  monthlyContribution?: number; // ← AJOUTER
+  targetDate?: string;
 }
 
 // interface DreamCategory {
@@ -241,6 +245,8 @@ export default function ExploreScreen() {
     targetAmount: "",
     currentAmount: "0",
     category: "travel",
+    monthlyContribution: "", // ← AJOUTER
+    targetDate: "",
   });
   const [newGoal, setNewGoal] = useState({
     title: "",
@@ -248,8 +254,12 @@ export default function ExploreScreen() {
     targetAmount: "",
     currentAmount: "0",
     monthlySavings: "",
+    monthlyContribution: "", // ← AJOUTER
+    targetDate: "",
   });
-
+  const [editingDreamId, setEditingDreamId] = useState<string | null>(null);
+  const [editingGoalId, setEditingGoalId] = useState<string | null>(null);
+  const [editMonthlyValue, setEditMonthlyValue] = useState("");
   // Charger les données
   const loadData = async () => {
     try {
@@ -304,11 +314,22 @@ export default function ExploreScreen() {
       return;
     }
 
-    const dream = {
+    // const dream = {
+    //   id: Date.now().toString(),
+    //   ...newDream,
+    //   targetAmount: target,
+    //   currentAmount: current,
+    //   createdAt: new Date().toISOString(),
+    // };
+
+    const dream: Dream = {
       id: Date.now().toString(),
-      ...newDream,
+      name: newDream.name,
       targetAmount: target,
       currentAmount: current,
+      category: newDream.category,
+      monthlyContribution: monthly > 0 ? monthly : undefined, // ← AJOUTER
+      targetDate: newDream.targetDate || undefined, // ← AJOUTER
       createdAt: new Date().toISOString(),
     };
 
@@ -338,12 +359,23 @@ export default function ExploreScreen() {
       return;
     }
 
-    const goal = {
+    // const goal = {
+    //   id: Date.now().toString(),
+    //   ...newGoal,
+    //   targetAmount: target,
+    //   currentAmount: current,
+    //   monthlySavings: monthly,
+    //   createdAt: new Date().toISOString(),
+    // };
+
+    const goal: Goal = {
       id: Date.now().toString(),
-      ...newGoal,
+      title: newGoal.title,
+      type: newGoal.type,
       targetAmount: target,
       currentAmount: current,
-      monthlySavings: monthly,
+      monthlyContribution: monthly > 0 ? monthly : undefined, // ← AJOUTER
+      targetDate: newGoal.targetDate || undefined, // ← AJOUTER
       createdAt: new Date().toISOString(),
     };
 
@@ -382,6 +414,73 @@ export default function ExploreScreen() {
     ]);
   };
 
+  // Ajouter après handleDeleteGoal
+
+  // Mise à jour de la contribution mensuelle
+  const updateMonthlyContribution = (
+    item: Dream | Goal,
+    value: string,
+    isDream: boolean,
+  ) => {
+    const numValue = parseFloat(value);
+    if (isNaN(numValue) || numValue < 0) return;
+
+    if (isDream) {
+      const updated = dreams.map((d) =>
+        d.id === item.id
+          ? { ...d, monthlyContribution: numValue || undefined }
+          : d,
+      );
+      saveDreams(updated);
+    } else {
+      const updated = goals.map((g) =>
+        g.id === item.id
+          ? { ...g, monthlyContribution: numValue || undefined }
+          : g,
+      );
+      saveGoals(updated);
+    }
+    setEditingDreamId(null);
+    setEditingGoalId(null);
+  };
+
+  // Calculer la projection
+  const calculateProjection = (item: Dream | Goal, isDream: boolean) => {
+    const remaining = item.targetAmount - item.currentAmount;
+    if (remaining <= 0) return { achieved: true };
+
+    const monthly = isDream
+      ? (item as Dream).monthlyContribution
+      : (item as Goal).monthlyContribution;
+
+    if (!monthly || monthly <= 0) {
+      return {
+        needsMonthly: true,
+        monthlyNeeded: remaining / 12, // Par défaut sur 1 an
+      };
+    }
+
+    const monthsNeeded = Math.ceil(remaining / monthly);
+    const years = Math.floor(monthsNeeded / 12);
+    const months = monthsNeeded % 12;
+
+    return {
+      years,
+      months,
+      monthsNeeded,
+      monthlyNeeded: monthly,
+      achieved: false,
+    };
+  };
+
+  // Formater la projection
+  const formatProjection = (years: number, months: number): string => {
+    const parts = [];
+    if (years > 0) parts.push(`${years} an${years > 1 ? "s" : ""}`);
+    if (months > 0) parts.push(`${months} mois`);
+    return parts.length > 0 ? parts.join(" et ") : "moins d'un mois";
+  };
+
   // Contribution rapide à un rêve
   const addContribution = (dream: Dream, amount: number) => {
     const newAmount = dream.currentAmount + amount;
@@ -416,7 +515,7 @@ export default function ExploreScreen() {
 
     return (
       <ThemedView style={styles.card}>
-        <View style={styles.cardHeader}>
+        {/* <View style={styles.cardHeader}>
           <View
             style={[
               styles.iconContainer,
@@ -486,7 +585,100 @@ export default function ExploreScreen() {
               </TouchableOpacity>
             ))}
           </View>
+        </View> */}
+
+        <View style={styles.monthlySection}>
+          <ThemedText style={styles.sectionLabel}>Épargne mensuelle</ThemedText>
+
+          {editingDreamId === item.id ? (
+            <View style={styles.monthlyEdit}>
+              <TextInput
+                style={styles.monthlyInput}
+                value={editMonthlyValue}
+                onChangeText={setEditMonthlyValue}
+                keyboardType="numeric"
+                placeholder="Montant"
+                placeholderTextColor={COLORS.textLight}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  updateMonthlyContribution(item, editMonthlyValue, true)
+                }
+                style={styles.monthlySaveButton}
+              >
+                <Ionicons name="checkmark" size={20} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setEditingDreamId(null)}
+                style={[
+                  styles.monthlySaveButton,
+                  { backgroundColor: COLORS.danger },
+                ]}
+              >
+                <Ionicons name="close" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.monthlyDisplay}
+              onPress={() => {
+                setEditingDreamId(item.id);
+                setEditMonthlyValue(item.monthlyContribution?.toString() || "");
+              }}
+            >
+              <ThemedText style={styles.monthlyAmount}>
+                {item.monthlyContribution
+                  ? formatCurrency(item.monthlyContribution)
+                  : "—"}
+              </ThemedText>
+              <ThemedText style={styles.monthlyLabel}>/mois</ThemedText>
+              <Ionicons
+                name="pencil"
+                size={16}
+                color={COLORS.textLight}
+                style={styles.editIcon}
+              />
+            </TouchableOpacity>
+          )}
         </View>
+
+        {/* Projection */}
+        {projection && !projection.achieved && (
+          <View style={styles.projectionCard}>
+            {projection.needsMonthly ? (
+              <View style={styles.projectionRow}>
+                <Ionicons name="bulb" size={16} color={COLORS.warning} />
+                <ThemedText style={styles.projectionText}>
+                  Définissez une épargne mensuelle pour voir la projection
+                </ThemedText>
+              </View>
+            ) : (
+              <>
+                <View style={styles.projectionRow}>
+                  <Ionicons
+                    name="calendar"
+                    size={16}
+                    color={COLORS.textLight}
+                  />
+                  <ThemedText style={styles.projectionText}>
+                    Objectif atteint dans{" "}
+                    {formatProjection(
+                      projection.years || 0,
+                      projection.months || 0,
+                    )}
+                  </ThemedText>
+                </View>
+                <View style={styles.projectionRow}>
+                  <Ionicons name="cash" size={16} color={COLORS.textLight} />
+                  <ThemedText style={styles.projectionText}>
+                    {formatCurrency(projection.monthlyNeeded || 0)}/mois
+                  </ThemedText>
+                </View>
+              </>
+            )}
+          </View>
+        )}
       </ThemedView>
     );
   };
@@ -500,7 +692,7 @@ export default function ExploreScreen() {
 
     return (
       <ThemedView style={styles.card}>
-        <View style={styles.cardHeader}>
+        {/* <View style={styles.cardHeader}>
           <View
             style={[
               styles.iconContainer,
@@ -567,6 +759,99 @@ export default function ExploreScreen() {
               </ThemedText>
             </View>
           </ThemedView>
+        )} */}
+
+        <View style={styles.monthlySection}>
+          <ThemedText style={styles.sectionLabel}>Épargne mensuelle</ThemedText>
+
+          {editingDreamId === item.id ? (
+            <View style={styles.monthlyEdit}>
+              <TextInput
+                style={styles.monthlyInput}
+                value={editMonthlyValue}
+                onChangeText={setEditMonthlyValue}
+                keyboardType="numeric"
+                placeholder="Montant"
+                placeholderTextColor={COLORS.textLight}
+                autoFocus
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  updateMonthlyContribution(item, editMonthlyValue, true)
+                }
+                style={styles.monthlySaveButton}
+              >
+                <Ionicons name="checkmark" size={20} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setEditingDreamId(null)}
+                style={[
+                  styles.monthlySaveButton,
+                  { backgroundColor: COLORS.danger },
+                ]}
+              >
+                <Ionicons name="close" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.monthlyDisplay}
+              onPress={() => {
+                setEditingDreamId(item.id);
+                setEditMonthlyValue(item.monthlyContribution?.toString() || "");
+              }}
+            >
+              <ThemedText style={styles.monthlyAmount}>
+                {item.monthlyContribution
+                  ? formatCurrency(item.monthlyContribution)
+                  : "—"}
+              </ThemedText>
+              <ThemedText style={styles.monthlyLabel}>/mois</ThemedText>
+              <Ionicons
+                name="pencil"
+                size={16}
+                color={COLORS.textLight}
+                style={styles.editIcon}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* Projection */}
+        {projection && !projection.achieved && (
+          <View style={styles.projectionCard}>
+            {projection.needsMonthly ? (
+              <View style={styles.projectionRow}>
+                <Ionicons name="bulb" size={16} color={COLORS.warning} />
+                <ThemedText style={styles.projectionText}>
+                  Définissez une épargne mensuelle pour voir la projection
+                </ThemedText>
+              </View>
+            ) : (
+              <>
+                <View style={styles.projectionRow}>
+                  <Ionicons
+                    name="calendar"
+                    size={16}
+                    color={COLORS.textLight}
+                  />
+                  <ThemedText style={styles.projectionText}>
+                    Objectif atteint dans{" "}
+                    {formatProjection(
+                      projection.years || 0,
+                      projection.months || 0,
+                    )}
+                  </ThemedText>
+                </View>
+                <View style={styles.projectionRow}>
+                  <Ionicons name="cash" size={16} color={COLORS.textLight} />
+                  <ThemedText style={styles.projectionText}>
+                    {formatCurrency(projection.monthlyNeeded || 0)}/mois
+                  </ThemedText>
+                </View>
+              </>
+            )}
+          </View>
         )}
       </ThemedView>
     );
@@ -886,7 +1171,7 @@ export default function ExploreScreen() {
                 placeholderTextColor="#999"
               />
 
-              <TextInput
+              {/* <TextInput
                 style={styles.input}
                 placeholder="Épargne mensuelle (€)"
                 value={newGoal.monthlySavings}
@@ -894,6 +1179,27 @@ export default function ExploreScreen() {
                   setNewGoal({ ...newGoal, monthlySavings: text })
                 }
                 keyboardType="numeric"
+                placeholderTextColor="#999"
+              /> */}
+
+              <TextInput
+                style={styles.input}
+                placeholder="Épargne mensuelle (€) - optionnel"
+                value={newDream.monthlyContribution}
+                onChangeText={(text) =>
+                  setNewDream({ ...newDream, monthlyContribution: text })
+                }
+                keyboardType="numeric"
+                placeholderTextColor="#999"
+              />
+
+              <TextInput
+                style={styles.input}
+                placeholder="Date cible (AAAA-MM-JJ) - optionnel"
+                value={newDream.targetDate}
+                onChangeText={(text) =>
+                  setNewDream({ ...newDream, targetDate: text })
+                }
                 placeholderTextColor="#999"
               />
 
@@ -1222,5 +1528,74 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#666",
     marginTop: 12,
+  },
+
+  // Ajouter ces styles à la fin de l'objet styles (avant la dernière accolade)
+  monthlySection: {
+    marginBottom: 12,
+  },
+  sectionLabel: {
+    fontSize: 13,
+    color: "#666",
+    marginBottom: 4,
+  },
+  monthlyDisplay: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.02)",
+    padding: 10,
+    borderRadius: 8,
+  },
+  monthlyAmount: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: COLORS.primary,
+  },
+  monthlyLabel: {
+    fontSize: 13,
+    color: "#666",
+    marginLeft: 4,
+  },
+  editIcon: {
+    marginLeft: "auto",
+  },
+  monthlyEdit: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  monthlyInput: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.05)",
+    padding: 10,
+    borderRadius: 8,
+    fontSize: 15,
+    color: "#000",
+    marginRight: 8,
+  },
+  monthlySaveButton: {
+    backgroundColor: COLORS.primary,
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+  },
+  projectionCard: {
+    marginTop: 8,
+    marginBottom: 12,
+    padding: 12,
+    backgroundColor: "rgba(0,0,0,0.02)",
+    borderRadius: 8,
+  },
+  projectionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  projectionText: {
+    fontSize: 13,
+    marginLeft: 6,
+    flex: 1,
   },
 });
