@@ -136,7 +136,38 @@ import { formatCurrency } from "../../src/utils/formatters";
 const DREAMS_STORAGE = "@finance_app_dreams";
 const GOALS_STORAGE = "@finance_app_goals";
 
-const DREAM_CATEGORIES = [
+type IconName = React.ComponentProps<typeof Ionicons>["name"];
+
+// const DREAM_CATEGORIES = [
+//   { id: "travel", name: "Voyage", icon: "airplane", color: "#3B82F6" },
+//   { id: "car", name: "Voiture", icon: "car", color: "#EF4444" },
+//   { id: "house", name: "Maison", icon: "home", color: "#10B981" },
+//   { id: "retirement", name: "Retraite", icon: "umbrella", color: "#8B5CF6" },
+//   { id: "education", name: "Éducation", icon: "school", color: "#F59E0B" },
+//   { id: "wedding", name: "Mariage", icon: "heart", color: "#EC4899" },
+//   { id: "business", name: "Entreprise", icon: "business", color: "#6366F1" },
+//   { id: "other", name: "Autre", icon: "star", color: "#6B7280" },
+// ];
+
+// const GOAL_TYPES = [
+//   { id: "retirement", name: "Retraite", icon: "umbrella", color: "#8B5CF6" },
+//   { id: "house", name: "Achat Maison", icon: "home", color: "#10B981" },
+//   { id: "car", name: "Achat Voiture", icon: "car", color: "#EF4444" },
+//   { id: "education", name: "Éducation", icon: "school", color: "#F59E0B" },
+//   {
+//     id: "investment",
+//     name: "Investissement",
+//     icon: "trending-up",
+//     color: "#6366F1",
+//   },
+// ];
+
+const DREAM_CATEGORIES: {
+  id: string;
+  name: string;
+  icon: IconName;
+  color: string;
+}[] = [
   { id: "travel", name: "Voyage", icon: "airplane", color: "#3B82F6" },
   { id: "car", name: "Voiture", icon: "car", color: "#EF4444" },
   { id: "house", name: "Maison", icon: "home", color: "#10B981" },
@@ -147,7 +178,13 @@ const DREAM_CATEGORIES = [
   { id: "other", name: "Autre", icon: "star", color: "#6B7280" },
 ];
 
-const GOAL_TYPES = [
+// Même chose pour GOAL_TYPES
+const GOAL_TYPES: {
+  id: string;
+  name: string;
+  icon: IconName;
+  color: string;
+}[] = [
   { id: "retirement", name: "Retraite", icon: "umbrella", color: "#8B5CF6" },
   { id: "house", name: "Achat Maison", icon: "home", color: "#10B981" },
   { id: "car", name: "Achat Voiture", icon: "car", color: "#EF4444" },
@@ -179,19 +216,19 @@ interface Goal {
   createdAt: string;
 }
 
-interface DreamCategory {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
+// interface DreamCategory {
+//   id: string;
+//   name: string;
+//   icon: string;
+//   color: string;
+// }
 
-interface GoalType {
-  id: string;
-  name: string;
-  icon: string;
-  color: string;
-}
+// interface GoalType {
+//   id: string;
+//   name: string;
+//   icon: string;
+//   color: string;
+// }
 export default function ExploreScreen() {
   // const router = useRouter();
   const [activeTab, setActiveTab] = useState("dreams"); // 'dreams' ou 'goals'
@@ -346,7 +383,7 @@ export default function ExploreScreen() {
   };
 
   // Contribution rapide à un rêve
-  const addContribution = (dream, amount) => {
+  const addContribution = (dream: Dream, amount: number) => {
     const newAmount = dream.currentAmount + amount;
     if (newAmount > dream.targetAmount) {
       Alert.alert("Félicitations !", "Vous avez atteint votre objectif ! 🎉");
@@ -371,7 +408,7 @@ export default function ExploreScreen() {
   };
 
   // Rendu d'un rêve
-  const renderDream = ({ item }) => {
+  const renderDream = ({ item }: { item: Dream }) => {
     const category =
       DREAM_CATEGORIES.find((c) => c.id === item.category) ||
       DREAM_CATEGORIES[0];
@@ -455,7 +492,7 @@ export default function ExploreScreen() {
   };
 
   // Rendu d'un objectif
-  const renderGoal = ({ item }) => {
+  const renderGoal = ({ item }: { item: Goal }) => {
     const goalType =
       GOAL_TYPES.find((g) => g.id === item.type) || GOAL_TYPES[0];
     const progress = (item.currentAmount / item.targetAmount) * 100;
@@ -536,12 +573,18 @@ export default function ExploreScreen() {
   };
 
   // Calcul des stats
-  const totalDreamsTarget = dreams.reduce((sum, d) => sum + d.targetAmount, 0);
-  const totalDreamsCurrent = dreams.reduce(
+  const totalDreamsTarget: number = dreams.reduce(
+    (sum, d) => sum + d.targetAmount,
+    0,
+  );
+  const totalDreamsCurrent: number = dreams.reduce(
     (sum, d) => sum + d.currentAmount,
     0,
   );
-  const totalGoalsTarget = goals.reduce((sum, g) => sum + g.targetAmount, 0);
+  const totalGoalsTarget: number = goals.reduce(
+    (sum, g) => sum + g.targetAmount,
+    0,
+  );
   const totalGoalsCurrent = goals.reduce((sum, g) => sum + g.currentAmount, 0);
 
   return (
@@ -564,7 +607,7 @@ export default function ExploreScreen() {
       </ThemedView>
 
       {/* Statistiques globales */}
-      <ThemedView style={styles.statsContainer}>
+      {/* <ThemedView style={styles.statsContainer}>
         <View style={styles.statCard}>
           <ThemedText style={styles.statValue}>{dreams.length}</ThemedText>
           <ThemedText style={styles.statLabel}>Rêves</ThemedText>
@@ -578,6 +621,54 @@ export default function ExploreScreen() {
             {formatCurrency(totalDreamsCurrent + totalGoalsCurrent)}
           </ThemedText>
           <ThemedText style={styles.statLabel}>Épargné</ThemedText>
+        </View>
+      </ThemedView> */}
+
+      {/* Statistiques globales */}
+      <ThemedView style={styles.statsContainer}>
+        {/* Première ligne : compteurs */}
+        <View style={styles.statCard}>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>{dreams.length}</ThemedText>
+            <ThemedText style={styles.statLabel}>Rêves</ThemedText>
+          </View>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>{goals.length}</ThemedText>
+            <ThemedText style={styles.statLabel}>Objectifs</ThemedText>
+          </View>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>
+              {formatCurrency(totalDreamsCurrent + totalGoalsCurrent)}
+            </ThemedText>
+            <ThemedText style={styles.statLabel}>Épargné</ThemedText>
+          </View>
+        </View>
+
+        {/* Deuxième ligne : objectifs */}
+        <View style={styles.statCard}>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>
+              {formatCurrency(totalDreamsTarget)}
+            </ThemedText>
+            <ThemedText style={styles.statLabel}>Objectif rêves</ThemedText>
+          </View>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>
+              {formatCurrency(totalGoalsTarget)}
+            </ThemedText>
+            <ThemedText style={styles.statLabel}>Objectif objectifs</ThemedText>
+          </View>
+          <View style={styles.statCard}>
+            <ThemedText style={styles.statValue}>
+              {(
+                ((totalDreamsCurrent + totalGoalsCurrent) /
+                  (totalDreamsTarget + totalGoalsTarget)) *
+                  100 || 0
+              ).toFixed(1)}
+              %
+            </ThemedText>
+            <ThemedText style={styles.statLabel}>Progrès global</ThemedText>
+          </View>
         </View>
       </ThemedView>
 
@@ -706,7 +797,7 @@ export default function ExploreScreen() {
           )}
 
           {/* Liste des rêves */}
-          <FlatList
+          {/* <FlatList
             data={dreams}
             keyExtractor={(item) => item.id}
             renderItem={renderDream}
@@ -724,6 +815,27 @@ export default function ExploreScreen() {
                   </ThemedText>
                 </ThemedView>
               )
+            }
+          /> */}
+
+          <FlatList
+            data={dreams}
+            keyExtractor={(item) => item.id}
+            renderItem={renderDream}
+            scrollEnabled={false}
+            ListEmptyComponent={
+              !showAddDream ? (
+                <ThemedView style={styles.emptyContainer}>
+                  <Ionicons
+                    name="heart-outline"
+                    size={50}
+                    color={COLORS.textLight}
+                  />
+                  <ThemedText style={styles.emptyText}>
+                    Aucun rêve pour le moment
+                  </ThemedText>
+                </ThemedView>
+              ) : null // 👈 Important: retourner null quand showAddDream est true
             }
           />
         </>
@@ -828,7 +940,7 @@ export default function ExploreScreen() {
           )}
 
           {/* Liste des objectifs */}
-          <FlatList
+          {/* <FlatList
             data={goals}
             keyExtractor={(item) => item.id}
             renderItem={renderGoal}
@@ -846,6 +958,27 @@ export default function ExploreScreen() {
                   </ThemedText>
                 </ThemedView>
               )
+            }
+          /> */}
+
+          <FlatList
+            data={goals}
+            keyExtractor={(item) => item.id}
+            renderItem={renderGoal}
+            scrollEnabled={false}
+            ListEmptyComponent={
+              !showAddGoal ? (
+                <ThemedView style={styles.emptyContainer}>
+                  <Ionicons
+                    name="flag-outline"
+                    size={50}
+                    color={COLORS.textLight}
+                  />
+                  <ThemedText style={styles.emptyText}>
+                    Aucun objectif pour le moment
+                  </ThemedText>
+                </ThemedView>
+              ) : null // 👈 Important: retourner null quand showAddGoal est true
             }
           />
         </>

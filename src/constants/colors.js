@@ -10,4 +10,5 @@ export const COLORS = {
   income: "#10B981",
   expense: "#EF4444",
   savings: "#6366F1",
+  success: "#10B981",
 };
