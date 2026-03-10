@@ -339,6 +339,8 @@ export default function ExploreScreen() {
       targetAmount: "",
       currentAmount: "0",
       category: "travel",
+      monthlyContribution: "", // ← AJOUTER
+      targetDate: "",
     });
     setShowAddDream(false);
   };
@@ -386,6 +388,8 @@ export default function ExploreScreen() {
       targetAmount: "",
       currentAmount: "0",
       monthlySavings: "",
+      monthlyContribution: "", // ← AJOUTER
+      targetDate: "",
     });
     setShowAddGoal(false);
   };
@@ -445,33 +449,33 @@ export default function ExploreScreen() {
   };
 
   // Calculer la projection
-  const calculateProjection = (item: Dream | Goal, isDream: boolean) => {
-    const remaining = item.targetAmount - item.currentAmount;
-    if (remaining <= 0) return { achieved: true };
+  // const calculateProjection = (item: Dream | Goal, isDream: boolean) => {
+  //   const remaining = item.targetAmount - item.currentAmount;
+  //   if (remaining <= 0) return { achieved: true };
 
-    const monthly = isDream
-      ? (item as Dream).monthlyContribution
-      : (item as Goal).monthlyContribution;
+  //   const monthly = isDream
+  //     ? (item as Dream).monthlyContribution
+  //     : (item as Goal).monthlyContribution;
 
-    if (!monthly || monthly <= 0) {
-      return {
-        needsMonthly: true,
-        monthlyNeeded: remaining / 12, // Par défaut sur 1 an
-      };
-    }
+  //   if (!monthly || monthly <= 0) {
+  //     return {
+  //       needsMonthly: true,
+  //       monthlyNeeded: remaining / 12, // Par défaut sur 1 an
+  //     };
+  //   }
 
-    const monthsNeeded = Math.ceil(remaining / monthly);
-    const years = Math.floor(monthsNeeded / 12);
-    const months = monthsNeeded % 12;
+  //   const monthsNeeded = Math.ceil(remaining / monthly);
+  //   const years = Math.floor(monthsNeeded / 12);
+  //   const months = monthsNeeded % 12;
 
-    return {
-      years,
-      months,
-      monthsNeeded,
-      monthlyNeeded: monthly,
-      achieved: false,
-    };
-  };
+  //   return {
+  //     years,
+  //     months,
+  //     monthsNeeded,
+  //     monthlyNeeded: monthly,
+  //     achieved: false,
+  //   };
+  // };
 
   // Formater la projection
   const formatProjection = (years: number, months: number): string => {
@@ -512,7 +516,7 @@ export default function ExploreScreen() {
       DREAM_CATEGORIES.find((c) => c.id === item.category) ||
       DREAM_CATEGORIES[0];
     const progress = (item.currentAmount / item.targetAmount) * 100;
-
+    const projection = calculateProjection(item, true);
     return (
       <ThemedView style={styles.card}>
         {/* <View style={styles.cardHeader}>
@@ -764,7 +768,7 @@ export default function ExploreScreen() {
         <View style={styles.monthlySection}>
           <ThemedText style={styles.sectionLabel}>Épargne mensuelle</ThemedText>
 
-          {editingDreamId === item.id ? (
+          {editingGoalId === item.id ? (
             <View style={styles.monthlyEdit}>
               <TextInput
                 style={styles.monthlyInput}
