@@ -58,25 +58,26 @@ export default function AddTransactionScreen() {
     router.back();
   };
 
+  const handleGoBack = () => {
+    // Retourner à l'onglet Transactions sans sauvegarder
+    router.replace("/(tabs)/transView");
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={COLORS.text} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>transacBacck</Text>
+        <View style={{ width: 20 }} /> {/* Espace pour équilibrer */}
+      </View>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.typeContainer}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={styles.backButton}
-            >
-              <Ionicons name="arrow-back" size={24} color={COLORS.text} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Transactions</Text>
-            {/* <View style={{ width: 24 }} /> */}
-            <View style={{ width: 40 }} /> {/* Espace pour équilibrer */}
-          </View>
-
           <TouchableOpacity
             style={[
               styles.typeButton,
