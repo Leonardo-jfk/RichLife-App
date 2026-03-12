@@ -1241,6 +1241,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import BackgroundImage from "../../src/components/BackgroundImage";
 import { COLORS } from "../../src/constants/colors";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
@@ -1320,224 +1321,229 @@ export default function HomeScreen() {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chart.line.uptrend.xyaxis"
-          style={styles.headerImage}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">📊 Résumé du Mois</ThemedText>
-      </ThemedView>
-
-      {/* Carte des revenus/dépenses avec bouton d'édition */}
-      <ThemedView style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>Flux mensuel</Text>
-          <TouchableOpacity onPress={() => setShowIncomeModal(true)}>
-            <Ionicons name="pencil" size={20} color={COLORS.textLight} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.statItem}
-            onPress={() => setShowIncomeModal(true)}
-          >
-            <Ionicons name="arrow-down" size={20} color={COLORS.income} />
-            <Text style={styles.statLabel}>Revenus</Text>
-            <Text style={[styles.statValue, { color: COLORS.income }]}>
-              {formatCurrency(monthlyIncome)}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.statItem}
-            onPress={() => setShowIncomeModal(true)}
-          >
-            <Ionicons name="arrow-up" size={20} color={COLORS.expense} />
-            <Text style={styles.statLabel}>Dépenses</Text>
-            <Text style={[styles.statValue, { color: COLORS.expense }]}>
-              {formatCurrency(monthlyExpenses)}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.divider} />
-
-        <View style={styles.savingsContainer}>
-          <Text style={styles.savingsLabel}>Économies du mois</Text>
-          <Text
-            style={[
-              styles.savingsValue,
-              {
-                color: stats.totalSavings >= 0 ? COLORS.success : COLORS.danger,
-              },
-            ]}
-          >
-            {formatCurrency(stats.totalSavings)}
-          </Text>
-          <Text style={styles.projectionText}>
-            Projection annuelle: {formatCurrency(stats.projectedSavings)}
-          </Text>
-        </View>
-      </ThemedView>
-
-      {/* Modal pour modifier les revenus/dépenses */}
-      <Modal
-        visible={showIncomeModal}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setShowIncomeModal(false)}
+    <BackgroundImage opacity={0.3} blurRadius={2}>
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+        headerImage={
+          <IconSymbol
+            size={310}
+            color="#808080"
+            name="chart.line.uptrend.xyaxis"
+            style={styles.headerImage}
+          />
+        }
       >
-        <View style={styles.modalOverlay}>
-          <ThemedView style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Modifier les montants</Text>
+        <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title">📊 Résumé du Mois</ThemedText>
+        </ThemedView>
 
-            <Text style={styles.modalLabel}>Revenus mensuels</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={tempIncome}
-              onChangeText={setTempIncome}
-              keyboardType="numeric"
-              placeholder="Montant"
-              placeholderTextColor={COLORS.textLight}
-            />
+        {/* Carte des revenus/dépenses avec bouton d'édition */}
+        <ThemedView style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Flux mensuel</Text>
+            <TouchableOpacity onPress={() => setShowIncomeModal(true)}>
+              <Ionicons name="pencil" size={20} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
 
-            <Text style={styles.modalLabel}>Dépenses mensuelles</Text>
-            <TextInput
-              style={styles.modalInput}
-              value={tempExpenses}
-              onChangeText={setTempExpenses}
-              keyboardType="numeric"
-              placeholder="Montant"
-              placeholderTextColor={COLORS.textLight}
-            />
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.statItem}
+              onPress={() => setShowIncomeModal(true)}
+            >
+              <Ionicons name="arrow-down" size={20} color={COLORS.income} />
+              <Text style={styles.statLabel}>Revenus</Text>
+              <Text style={[styles.statValue, { color: COLORS.income }]}>
+                {formatCurrency(monthlyIncome)}
+              </Text>
+            </TouchableOpacity>
 
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.modalCancel]}
-                onPress={() => setShowIncomeModal(false)}
-              >
-                <Text style={styles.modalButtonText}>Annuler</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.modalSave]}
-                onPress={() => {
-                  handleSaveIncome();
-                  handleSaveExpenses();
-                }}
-              >
-                <Text style={[styles.modalButtonText, { color: "white" }]}>
-                  Enregistrer
-                </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.statItem}
+              onPress={() => setShowIncomeModal(true)}
+            >
+              <Ionicons name="arrow-up" size={20} color={COLORS.expense} />
+              <Text style={styles.statLabel}>Dépenses</Text>
+              <Text style={[styles.statValue, { color: COLORS.expense }]}>
+                {formatCurrency(monthlyExpenses)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.divider} />
+
+          <View style={styles.savingsContainer}>
+            <Text style={styles.savingsLabel}>Économies du mois</Text>
+            <Text
+              style={[
+                styles.savingsValue,
+                {
+                  color:
+                    stats.totalSavings >= 0 ? COLORS.success : COLORS.danger,
+                },
+              ]}
+            >
+              {formatCurrency(stats.totalSavings)}
+            </Text>
+            <Text style={styles.projectionText}>
+              Projection annuelle: {formatCurrency(stats.projectedSavings)}
+            </Text>
+          </View>
+        </ThemedView>
+
+        {/* Modal pour modifier les revenus/dépenses */}
+        <Modal
+          visible={showIncomeModal}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShowIncomeModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <ThemedView style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Modifier les montants</Text>
+
+              <Text style={styles.modalLabel}>Revenus mensuels</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={tempIncome}
+                onChangeText={setTempIncome}
+                keyboardType="numeric"
+                placeholder="Montant"
+                placeholderTextColor={COLORS.textLight}
+              />
+
+              <Text style={styles.modalLabel}>Dépenses mensuelles</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={tempExpenses}
+                onChangeText={setTempExpenses}
+                keyboardType="numeric"
+                placeholder="Montant"
+                placeholderTextColor={COLORS.textLight}
+              />
+
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalCancel]}
+                  onPress={() => setShowIncomeModal(false)}
+                >
+                  <Text style={styles.modalButtonText}>Annuler</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalSave]}
+                  onPress={() => {
+                    handleSaveIncome();
+                    handleSaveExpenses();
+                  }}
+                >
+                  <Text style={[styles.modalButtonText, { color: "white" }]}>
+                    Enregistrer
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ThemedView>
+          </View>
+        </Modal>
+
+        {/* Contributions aux projets */}
+        <ThemedView style={styles.card}>
+          <Text style={styles.cardTitle}>Contributions mensuelles</Text>
+
+          <View style={styles.row}>
+            <View style={styles.statItem}>
+              <Ionicons name="heart" size={20} color="#EC4899" />
+              <Text style={styles.statLabel}>Rêves</Text>
+              <Text style={styles.statValue}>
+                {formatCurrency(stats.monthlyContributions.dreams)}
+              </Text>
             </View>
-          </ThemedView>
-        </View>
-      </Modal>
 
-      {/* Contributions aux projets */}
-      <ThemedView style={styles.card}>
-        <Text style={styles.cardTitle}>Contributions mensuelles</Text>
+            <View style={styles.statItem}>
+              <Ionicons name="flag" size={20} color="#8B5CF6" />
+              <Text style={styles.statLabel}>Objectifs</Text>
+              <Text style={styles.statValue}>
+                {formatCurrency(stats.monthlyContributions.goals)}
+              </Text>
+            </View>
+          </View>
 
-        <View style={styles.row}>
-          <View style={styles.statItem}>
-            <Ionicons name="heart" size={20} color="#EC4899" />
-            <Text style={styles.statLabel}>Rêves</Text>
-            <Text style={styles.statValue}>
-              {formatCurrency(stats.monthlyContributions.dreams)}
+          <View style={styles.totalContributions}>
+            <Text style={styles.totalLabel}>
+              Total épargné pour les projets
+            </Text>
+            <Text style={styles.totalValue}>
+              {formatCurrency(stats.monthlyContributions.total)}
             </Text>
           </View>
+        </ThemedView>
 
-          <View style={styles.statItem}>
-            <Ionicons name="flag" size={20} color="#8B5CF6" />
-            <Text style={styles.statLabel}>Objectifs</Text>
-            <Text style={styles.statValue}>
-              {formatCurrency(stats.monthlyContributions.goals)}
+        {/* Progression des projets */}
+        <ThemedView style={styles.card}>
+          <Text style={styles.cardTitle}>Progression des projets</Text>
+
+          <TouchableOpacity
+            style={styles.projectRow}
+            onPress={() => router.push("/(tabs)/explore?tab=dreams")}
+          >
+            <View style={styles.projectHeader}>
+              <Ionicons name="heart" size={20} color="#EC4899" />
+              <Text style={styles.projectLabel}>Rêves</Text>
+              <Text style={styles.projectAmount}>
+                {formatCurrency(totalDreamsCurrent)}
+              </Text>
+            </View>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  {
+                    width: `${stats.progress.dreams}%`,
+                    backgroundColor: "#EC4899",
+                  },
+                ]}
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {stats.progress.dreams.toFixed(1)}%
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.projectRow}
+            onPress={() => router.push("/(tabs)/explore?tab=goals")}
+          >
+            <View style={styles.projectHeader}>
+              <Ionicons name="flag" size={20} color="#8B5CF6" />
+              <Text style={styles.projectLabel}>Objectifs</Text>
+              <Text style={styles.projectAmount}>
+                {formatCurrency(totalGoalsCurrent)}
+              </Text>
+            </View>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  {
+                    width: `${stats.progress.goals}%`,
+                    backgroundColor: "#8B5CF6",
+                  },
+                ]}
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {stats.progress.goals.toFixed(1)}%
+            </Text>
+          </TouchableOpacity>
+
+          <View style={styles.overallProgress}>
+            <Text style={styles.overallLabel}>Progrès global</Text>
+            <Text style={styles.overallValue}>
+              {stats.progress.overall.toFixed(1)}%
             </Text>
           </View>
-        </View>
-
-        <View style={styles.totalContributions}>
-          <Text style={styles.totalLabel}>Total épargné pour les projets</Text>
-          <Text style={styles.totalValue}>
-            {formatCurrency(stats.monthlyContributions.total)}
-          </Text>
-        </View>
-      </ThemedView>
-
-      {/* Progression des projets */}
-      <ThemedView style={styles.card}>
-        <Text style={styles.cardTitle}>Progression des projets</Text>
-
-        <TouchableOpacity
-          style={styles.projectRow}
-          onPress={() => router.push("/(tabs)/explore?tab=dreams")}
-        >
-          <View style={styles.projectHeader}>
-            <Ionicons name="heart" size={20} color="#EC4899" />
-            <Text style={styles.projectLabel}>Rêves</Text>
-            <Text style={styles.projectAmount}>
-              {formatCurrency(totalDreamsCurrent)}
-            </Text>
-          </View>
-          <View style={styles.progressBarContainer}>
-            <View
-              style={[
-                styles.progressBar,
-                {
-                  width: `${stats.progress.dreams}%`,
-                  backgroundColor: "#EC4899",
-                },
-              ]}
-            />
-          </View>
-          <Text style={styles.progressText}>
-            {stats.progress.dreams.toFixed(1)}%
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.projectRow}
-          onPress={() => router.push("/(tabs)/explore?tab=goals")}
-        >
-          <View style={styles.projectHeader}>
-            <Ionicons name="flag" size={20} color="#8B5CF6" />
-            <Text style={styles.projectLabel}>Objectifs</Text>
-            <Text style={styles.projectAmount}>
-              {formatCurrency(totalGoalsCurrent)}
-            </Text>
-          </View>
-          <View style={styles.progressBarContainer}>
-            <View
-              style={[
-                styles.progressBar,
-                {
-                  width: `${stats.progress.goals}%`,
-                  backgroundColor: "#8B5CF6",
-                },
-              ]}
-            />
-          </View>
-          <Text style={styles.progressText}>
-            {stats.progress.goals.toFixed(1)}%
-          </Text>
-        </TouchableOpacity>
-
-        <View style={styles.overallProgress}>
-          <Text style={styles.overallLabel}>Progrès global</Text>
-          <Text style={styles.overallValue}>
-            {stats.progress.overall.toFixed(1)}%
-          </Text>
-        </View>
-      </ThemedView>
-    </ParallaxScrollView>
+        </ThemedView>
+      </ParallaxScrollView>
+    </BackgroundImage>
   );
 }
 
