@@ -28,8 +28,7 @@ export default function AddTransactionScreen() {
   const [type, setType] = useState("expense");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  // const [category, setCategory] = useState(null);
-  const [category, setCategory] = useState | (null > null);
+  const [category, setCategory] = useState(null);
 
   const handleSave = async () => {
     if (!amount || !description || !category) {
@@ -37,7 +36,8 @@ export default function AddTransactionScreen() {
       return;
     }
 
-    const numAmount = parseFloat(amount);
+    // const numAmount = parseFloat(amount);
+    const numAmount = parseFloat(amount.replace(",", "."));
     if (isNaN(numAmount) || numAmount <= 0) {
       Alert.alert("Erreur", "Montant invalide");
       return;
