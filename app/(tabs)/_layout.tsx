@@ -27,7 +27,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="transView"
         options={{
           title: "Transactions",
           // title: "Goals",
