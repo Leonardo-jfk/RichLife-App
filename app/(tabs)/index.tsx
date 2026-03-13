@@ -96,7 +96,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <BackgroundImage opacity={0.8} blurRadius={2}>
+    <BackgroundImage opacity={0.3} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="title">📊 Résumé du Mois</ThemedText>
@@ -121,6 +121,9 @@ export default function HomeScreen() {
               <Text style={styles.statLabel}>Revenus</Text>
               <Text style={[styles.statValue, { color: COLORS.income }]}>
                 {formatCurrency(monthlyIncome)}
+                <ThemedText forceOpaque={false}>
+                  Texte avec transparence possible
+                </ThemedText>
               </Text>
             </TouchableOpacity>
 
