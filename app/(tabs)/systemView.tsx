@@ -19,6 +19,12 @@ export default function SystemView() {
   const [notifications, setNotifications] = useState(true);
   const [biometric, setBiometric] = useState(false);
   const [currency, setCurrency] = useState("EUR");
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  const handleToggleTheme = () => {
+    toggleTheme();
+    setForceUpdate((prev) => prev + 1); // Force le re-rendu
+  };
 
   const clearAllData = () => {
     Alert.alert(
@@ -63,7 +69,7 @@ export default function SystemView() {
     <BackgroundImage opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Apparence */}
-        <IslandCard>
+        <IslandCard key={`preferences-${forceUpdate}`}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             <Ionicons name="color-palette" size={20} color={colors.text} />{" "}
             Apparence
@@ -74,7 +80,7 @@ export default function SystemView() {
               styles.settingRow,
               { borderBottomColor: colors.icon + "20" },
             ]}
-            onPress={toggleTheme}
+            onPress={handleToggleTheme}
           >
             <View style={styles.settingLeft}>
               <Ionicons
@@ -96,7 +102,7 @@ export default function SystemView() {
         </IslandCard>
 
         {/* Préférences */}
-        <IslandCard>
+        <IslandCard key={`preferences-${forceUpdate}`}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             <Ionicons name="settings" size={20} color={colors.text} />{" "}
             Préférences
@@ -171,7 +177,7 @@ export default function SystemView() {
         </IslandCard>
 
         {/* Informations */}
-        <IslandCard>
+        <IslandCard key={`preferences-${forceUpdate}`}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             <Ionicons name="information-circle" size={20} color={colors.text} />{" "}
             Informations
@@ -212,7 +218,7 @@ export default function SystemView() {
         </IslandCard>
 
         {/* Actions */}
-        <IslandCard>
+        <IslandCard key={`preferences-${forceUpdate}`}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             <Ionicons name="warning" size={20} color={colors.text} /> Actions
           </Text>
