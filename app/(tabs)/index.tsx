@@ -19,6 +19,7 @@ import {
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
 import { COLORS } from "../../src/constants/colors";
+import { useAppTheme } from "../../src/hooks/useAppTheme";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
 import { formatCurrency } from "../../src/utils/formatters";
@@ -95,6 +96,8 @@ export default function HomeScreen() {
     setShowIncomeModal(false);
   };
 
+  const { colors } = useAppTheme();
+
   return (
     <BackgroundImage opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
@@ -106,7 +109,9 @@ export default function HomeScreen() {
         {/* <ThemedView style={styles.card}> */}
         <IslandCard>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Flux mensuel</Text>
+            <Text style={[styles.cardTitle, { color: colors.text }]}>
+              Flux mensuel
+            </Text>
             <TouchableOpacity onPress={() => setShowIncomeModal(true)}>
               <Ionicons name="pencil" size={20} color={COLORS.textLight} />
             </TouchableOpacity>
