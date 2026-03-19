@@ -606,7 +606,7 @@
 // });
 
 // import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
+// import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 // import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Ionicons } from "@expo/vector-icons";
@@ -626,7 +626,7 @@ import {
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
 import { COLORS } from "../../src/constants/colors";
-import { useAppTheme } from "../../src/hooks/useAppTheme";
+import { useTheme } from "../../src/context/ThemeContext";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
 import { formatCurrency } from "../../src/utils/formatters";
@@ -635,7 +635,7 @@ import { formatCurrency } from "../../src/utils/formatters";
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { colors, isLoading, theme } = useAppTheme(); // ← Plus de toggleTheme ici
+  const { colors, isLoading, theme } = useTheme(); // ← Plus de toggleTheme ici
   const [forceUpdate, setForceUpdate] = useState(0);
 
   // États pour les rêves et objectifs
@@ -731,7 +731,10 @@ export default function HomeScreen() {
       <ScrollView style={styles.scrollView}>
         {/* Header sans bouton de thème */}
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">📊 Résumé du Mois</ThemedText>
+          <Text style={[styles.title, { color: colors.text }]}>
+            {" "}
+            Résumé du Mois
+          </Text>
         </ThemedView>
 
         {/* Carte des revenus/dépenses avec bouton d'édition */}
@@ -1009,6 +1012,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    // ← Défini ici
+    fontSize: 28,
+    fontWeight: "bold",
   },
   loadingText: {
     fontSize: 16,

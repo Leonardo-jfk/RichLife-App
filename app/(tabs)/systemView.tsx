@@ -12,10 +12,10 @@ import {
 } from "react-native";
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
-import { useAppTheme } from "../../src/hooks/useAppTheme";
+import { useTheme } from "../../src/context/ThemeContext";
 
 export default function SystemView() {
-  const { theme, colors, isLoading, toggleTheme } = useAppTheme();
+  const { theme, colors, isLoading, toggleTheme } = useTheme();
   const [notifications, setNotifications] = useState(true);
   const [biometric, setBiometric] = useState(false);
   const [currency, setCurrency] = useState("EUR");

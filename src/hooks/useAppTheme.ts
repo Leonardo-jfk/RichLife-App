@@ -79,64 +79,64 @@
 //   };
 // };
 
-import { Colors } from "@/constants/theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { useColorScheme } from "react-native";
-// import { useTheme } from '../context/ThemeContext';
+// import { Colors } from "@/constants/theme";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { useEffect, useState } from "react";
+// import { useColorScheme } from "react-native";
+// // import { useTheme } from '../context/ThemeContext';
 
-export type ThemeType = "light" | "dark";
+// export type ThemeType = "light" | "dark";
 
-// Version 1: Hook complet avec sa propre gestion du thème
-export const useAppTheme = () => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setThemeState] = useState<ThemeType>(
-    systemColorScheme || "light",
-  );
-  const [isLoading, setIsLoading] = useState(true);
+// // Version 1: Hook complet avec sa propre gestion du thème
+// export const useAppTheme = () => {
+//   const systemColorScheme = useColorScheme();
+//   const [theme, setThemeState] = useState<ThemeType>(
+//     systemColorScheme || "light",
+//   );
+//   const [isLoading, setIsLoading] = useState(true);
 
-  // Charger le thème sauvegardé
-  useEffect(() => {
-    loadTheme();
-  }, []);
+//   // Charger le thème sauvegardé
+//   useEffect(() => {
+//     loadTheme();
+//   }, []);
 
-  const loadTheme = async () => {
-    try {
-      const savedTheme = await AsyncStorage.getItem("@app_theme");
-      if (savedTheme === "light" || savedTheme === "dark") {
-        setThemeState(savedTheme);
-      }
-    } catch (error) {
-      console.error("Erreur chargement thème:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+//   const loadTheme = async () => {
+//     try {
+//       const savedTheme = await AsyncStorage.getItem("@app_theme");
+//       if (savedTheme === "light" || savedTheme === "dark") {
+//         setThemeState(savedTheme);
+//       }
+//     } catch (error) {
+//       console.error("Erreur chargement thème:", error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
 
-  const setTheme = async (newTheme: ThemeType) => {
-    setThemeState(newTheme);
-    try {
-      await AsyncStorage.setItem("@app_theme", newTheme);
-    } catch (error) {
-      console.error("Erreur sauvegarde thème:", error);
-    }
-  };
+//   const setTheme = async (newTheme: ThemeType) => {
+//     setThemeState(newTheme);
+//     try {
+//       await AsyncStorage.setItem("@app_theme", newTheme);
+//     } catch (error) {
+//       console.error("Erreur sauvegarde thème:", error);
+//     }
+//   };
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-  };
+//   const toggleTheme = () => {
+//     const newTheme = theme === "light" ? "dark" : "light";
+//     setTheme(newTheme);
+//   };
 
-  const colors = Colors[theme];
+//   const colors = Colors[theme];
 
-  return {
-    theme,
-    colors,
-    isLoading,
-    toggleTheme,
-    setTheme,
-  };
-};
+//   return {
+//     theme,
+//     colors,
+//     isLoading,
+//     toggleTheme,
+//     setTheme,
+//   };
+// };
 
 // Version 2: Hook qui utilise le contexte (COMMENTEZ LA SI VOUS UTILISEZ LA VERSION 1)
 // export const useAppTheme = () => {
