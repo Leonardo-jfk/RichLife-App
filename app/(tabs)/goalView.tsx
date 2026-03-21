@@ -5,6 +5,7 @@ import React, { useCallback, useState } from "react";
 import {
   Alert,
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -761,13 +762,31 @@ export default function ExploreScreen() {
   const totalGoalsTarget = goals.reduce((sum, g) => sum + g.targetAmount, 0);
   const totalGoalsCurrent = goals.reduce((sum, g) => sum + g.currentAmount, 0);
 
+  // Define imageSize used for the Image dimensions
+  const imageSize = 120;
+  const theme = (themeContext as any)?.theme ?? "light";
+  const imageSource =
+    theme === "dark"
+      ? require("../../assets/image/needDark.jpg")
+      : require("../../assets/image/needLight.jpeg");
+
   return (
     <BackgroundImage opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.titleContainer}>
           <Text style={[styles.title, { color: colors.text }]}>
-            🎯 Mes Objectifs
+            Mes Objectifs
           </Text>
+        </View>
+        <View style={styles.imageWrapper}>
+          <Image
+            source={imageSource} // Remplacez par votre chemin d'image
+            style={{
+              width: imageSize,
+              height: imageSize,
+              borderRadius: 12,
+            }}
+          />
         </View>
 
         {/* Statistiques globales */}
@@ -1127,6 +1146,16 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+  },
+  imageSize: {
+    width: 120,
+    height: 120,
+  },
+  imageWrapper: {
+    alignItems: "center", // Centre l'image horizontalement
+    justifyContent: "center", // Centre verticalement si nécessaire
+    marginVertical: 20, // Ajoute de l'espace au dessus et en dessous
+    width: "100%", // Prend toute la largeur pour permettre le centrage
   },
   titleContainer: {
     alignItems: "center",
