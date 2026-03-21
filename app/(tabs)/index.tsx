@@ -629,7 +629,8 @@ import { COLORS } from "../../src/constants/colors";
 import { useTheme } from "../../src/context/ThemeContext";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
-import { formatCurrency } from "../../src/utils/formatters";
+// import { formatCurrency } from "../../src/utils/formatters";
+import { useCurrency } from "../../src/context/CurrencyContext";
 
 // Types
 
@@ -705,6 +706,8 @@ export default function HomeScreen() {
     setShowIncomeModal(false);
   };
 
+  const { formatCurrency, currency } = useCurrency();
+
   // Mettre à jour forceUpdate quand le thème change
   React.useEffect(() => {
     setForceUpdate((prev) => prev + 1);
@@ -730,15 +733,13 @@ export default function HomeScreen() {
     <BackgroundImage opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
         {/* Header sans bouton de thème */}
-        <View
-          style={[
-            styles.titleContainer,
-            { backgroundColor: colors.background },
-          ]}
-        >
+        <View style={styles.titleContainer}>
           <Text style={[styles.title, { color: colors.text }]}>
             Résumé du Mois
           </Text>
+          {/* <Text style={[styles.title, { color: colors.text }]}>
+            Résumé du Mois
+          </Text> */}
         </View>
 
         {/* Carte des revenus/dépenses avec bouton d'édition */}
@@ -775,7 +776,7 @@ export default function HomeScreen() {
                 Dépenses
               </Text>
               <Text style={[styles.statValue, { color: COLORS.expense }]}>
-                {formatCurrency(monthlyExpenses)}
+                {formatCurrency(monthlyExpenses)} {currency}
               </Text>
             </TouchableOpacity>
           </View>
@@ -939,6 +940,7 @@ export default function HomeScreen() {
               <Text style={[styles.projectAmount, { color: colors.text }]}>
                 {formatCurrency(totalDreamsCurrent)}
               </Text>
+              <Text>{formatCurrency(totalDreamsCurrent)}</Text>
             </View>
             <View style={styles.progressBarContainer}>
               <View
@@ -1013,7 +1015,7 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 16,
     paddingHorizontal: 16,
-    paddingTop: 60,
+    paddingTop: 80,
   },
   loadingContainer: {
     flex: 1,

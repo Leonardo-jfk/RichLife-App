@@ -82,14 +82,23 @@
 
 // src/hooks/useMonthlyStats.ts
 import { useMemo } from "react";
-import { Dream, Goal, MonthlyStats } from "../types/finance-types";
+import { useCurrency } from "../context/CurrencyContext";
+import { Dream, Goal } from "../types/finance-types";
 
 export const useMonthlyStats = (
   dreams: Dream[],
   goals: Goal[],
-  monthlyIncome: number = 0,
-  monthlyExpenses: number = 0,
-): MonthlyStats => {
+  monthlyIncome: number,
+  monthlyExpenses: number,
+) => {
+  const { formatCurrency } = useCurrency();
+
+  // export const useMonthlyStats = (
+  //   dreams: Dream[],
+  //   goals: Goal[],
+  //   monthlyIncome: number = 0,
+  //   monthlyExpenses: number = 0,
+  // ): MonthlyStats => {
   return useMemo(() => {
     // Total des contributions mensuelles aux rêves
     const dreamsMonthlyTotal = dreams.reduce(
@@ -157,6 +166,7 @@ export const useMonthlyStats = (
         goals: goalsProgress,
         overall: overallProgress,
       },
+      formatCurrency,
     };
-  }, [dreams, goals, monthlyIncome, monthlyExpenses]);
+  }, [dreams, goals, monthlyIncome, monthlyExpenses, formatCurrency]);
 };

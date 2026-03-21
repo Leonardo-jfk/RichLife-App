@@ -12,19 +12,23 @@ import {
 } from "react-native";
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
+import { useCurrency } from "../../src/context/CurrencyContext";
 import { useTheme } from "../../src/context/ThemeContext";
 
 export default function SystemView() {
-  const { theme, colors, isLoading, toggleTheme } = useTheme();
+  const { theme, colors, isLoading } = useTheme();
+  // const { theme, colors, isLoading, toggleTheme } = useTheme();
+  const { currency, setCurrency } = useCurrency(); // ← Ajoutez ceci
+
   const [notifications, setNotifications] = useState(true);
   const [biometric, setBiometric] = useState(false);
-  const [currency, setCurrency] = useState("EUR");
+  // const [currency, setCurrency] = useState("EUR");
   // const [forceUpdate, setForceUpdate] = useState(0);
 
-  const handleToggleTheme = () => {
-    toggleTheme();
-    // setForceUpdate((prev) => prev + 1); // Force le re-rendu
-  };
+  // const handleToggleTheme = () => {
+  //   toggleTheme();
+  //   // setForceUpdate((prev) => prev + 1); // Force le re-rendu
+  // };
 
   const clearAllData = () => {
     Alert.alert(
@@ -88,7 +92,16 @@ export default function SystemView() {
               styles.settingRow,
               { borderBottomColor: colors.icon + "20" },
             ]}
-            onPress={handleToggleTheme}
+            // onPress={handleToggleTheme}
+            // onPress={toggleTheme}
+            onPress={() => {
+              const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"];
+              const currentIndex = currencies.indexOf(currency);
+              const nextCurrency = currencies[
+                (currentIndex + 1) % currencies.length
+              ] as any;
+              setCurrency(nextCurrency);
+            }}
           >
             <View style={styles.settingLeft}>
               <Ionicons
@@ -102,7 +115,7 @@ export default function SystemView() {
             </View>
             <View style={styles.settingRight}>
               <Text style={[styles.settingValue, { color: colors.icon }]}>
-                {theme === "light" ? "Clair" : "Sombre"}
+                {theme === "light" ? "Clair" : "Sombre"} {currency}
               </Text>
               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
             </View>
@@ -162,10 +175,15 @@ export default function SystemView() {
               { borderBottomColor: colors.icon + "20" },
             ]}
             onPress={() => {
-              const currencies = ["EUR", "USD", "GBP", "CHF"];
+              // const currencies = ["EUR", "USD", "GBP", "CHF"];
+              const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"]; // ← Ajout de ARS
               const currentIndex = currencies.indexOf(currency);
-              const nextCurrency =
-                currencies[(currentIndex + 1) % currencies.length];
+              // const nextCurrency =
+              //   currencies[(currentIndex + 1) % currencies.length];
+              // setCurrency(nextCurrency);
+              const nextCurrency = currencies[
+                (currentIndex + 1) % currencies.length
+              ] as "EUR" | "USD" | "GBP" | "CHF" | "ARS";
               setCurrency(nextCurrency);
             }}
           >
