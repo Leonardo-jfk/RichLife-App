@@ -233,8 +233,9 @@ function TabNavigation() {
           tabBarIcon: ({ color, focused }) => (
             <IconSymbol
               size={24}
-              name={focused ? "signature.ja" : "list.bullet"}
+              name={"signature.ja"}
               color={color}
+              type={focused ? "palette" : "monochrome"}
             />
           ),
         }}

@@ -607,7 +607,7 @@
 
 // import ParallaxScrollView from "@/components/parallax-scroll-view";
 // import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
+// import { ThemedView } from "@/components/themed-view";
 // import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -730,12 +730,16 @@ export default function HomeScreen() {
     <BackgroundImage opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
         {/* Header sans bouton de thème */}
-        <ThemedView style={styles.titleContainer}>
+        <View
+          style={[
+            styles.titleContainer,
+            { backgroundColor: colors.background },
+          ]}
+        >
           <Text style={[styles.title, { color: colors.text }]}>
-            {" "}
             Résumé du Mois
           </Text>
-        </ThemedView>
+        </View>
 
         {/* Carte des revenus/dépenses avec bouton d'édition */}
         <IslandCard>
