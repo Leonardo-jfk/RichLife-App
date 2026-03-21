@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useAppTheme } from "../hooks/useAppTheme";
+import { useTheme } from "../../src/context/ThemeContext";
 import { formatCurrency } from "../utils/formatters";
 
 const SummaryCard = ({ income, expenses, savings }) => {
-  const { colors } = useAppTheme();
+  const { colors } = useTheme();
 
   return (
     <View

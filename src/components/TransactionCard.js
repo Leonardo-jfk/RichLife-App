@@ -1,12 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../src/context/ThemeContext";
 import { CATEGORIES } from "../constants/categories";
-import { useAppTheme } from "../hooks/useAppTheme";
 import { formatCurrency, formatDate } from "../utils/formatters";
 
 const TransactionCard = ({ transaction, onDelete, onPress }) => {
-  const { colors } = useAppTheme();
+  const { colors } = useTheme();
 
   // Trouver la catégorie correspondante
   const category =
