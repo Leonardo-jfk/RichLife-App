@@ -53,7 +53,7 @@ export const CurrencyProvider = ({
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
+      // style: "currency",
       currency: currency,
       minimumFractionDigits: 2,
     }).format(amount);

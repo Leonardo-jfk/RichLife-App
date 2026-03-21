@@ -15,8 +15,8 @@ import {
 } from "react-native";
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
+import { useCurrency } from "../../src/context/CurrencyContext"; // ← AJOUTER
 import { useTheme } from "../../src/context/ThemeContext";
-import { formatCurrency } from "../../src/utils/formatters";
 
 const DREAMS_STORAGE = "@finance_app_dreams";
 const GOALS_STORAGE = "@finance_app_goals";
@@ -83,7 +83,7 @@ interface Goal {
 export default function ExploreScreen() {
   const themeContext = useTheme();
   const colors = themeContext.colors as any;
-  //   const theme = themeContext.theme;
+  const { formatCurrency } = useCurrency();
   colors.textLight = colors.textLight ?? colors.textDark ?? colors.text;
   const [activeTab, setActiveTab] = useState("dreams");
   const [dreams, setDreams] = useState<Dream[]>([]);

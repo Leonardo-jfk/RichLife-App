@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import TransactionCard from "../../src/components/TransactionCard";
 import { COLORS } from "../../src/constants/colors";
+import { useCurrency } from "../../src/context/CurrencyContext"; // ← AJOUTER
 import {
   calculateTotals,
   filterTransactionsByMonth,
 } from "../../src/utils/calculations";
-import { formatCurrency } from "../../src/utils/formatters";
 import { loadTransactions, saveTransactions } from "../../src/utils/storage";
 
 // Interface pour les transactions
@@ -38,6 +38,8 @@ interface Section {
 
 export default function TransactionsScreen() {
   const router = useRouter();
+  const { formatCurrency } = useCurrency(); // ← AJOUTER
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [viewMode, setViewMode] = useState<"month" | "all">("month"); // 'month' ou 'all'

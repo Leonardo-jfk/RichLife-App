@@ -16,7 +16,7 @@ import { useCurrency } from "../../src/context/CurrencyContext";
 import { useTheme } from "../../src/context/ThemeContext";
 
 export default function SystemView() {
-  const { theme, colors, isLoading } = useTheme();
+  const { theme, colors, isLoading, toggleTheme } = useTheme();
   // const { theme, colors, isLoading, toggleTheme } = useTheme();
   const { currency, setCurrency } = useCurrency(); // ← Ajoutez ceci
 
@@ -73,12 +73,210 @@ export default function SystemView() {
     );
   }
 
+  //   return (
+  //     <BackgroundImage
+  //       // key={`bg-loading-${forceUpdate}`}
+  //       opacity={0.9}
+  //       blurRadius={2}
+  //     >
+  //       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+  //         {/* Apparence */}
+  //         <IslandCard>
+  //           <Text style={[styles.sectionTitle, { color: colors.text }]}>
+  //             <Ionicons name="color-palette" size={20} color={colors.text} />{" "}
+  //             Apparence
+  //           </Text>
+
+  //           <TouchableOpacity
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //             onPress={toggleTheme}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons
+  //                 name={theme === "light" ? "sunny" : "moon"}
+  //                 size={22}
+  //                 color={theme === "light" ? "#FDB813" : "#F1C40F"}
+  //               />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Mode {theme === "light" ? "Clair" : "Sombre"}
+  //               </Text>
+  //             </View>
+  //             <View style={styles.settingRight}>
+  //               <Text style={[styles.settingValue, { color: colors.icon }]}>
+  //                 {theme === "light" ? "Clair" : "Sombre"} {currency}
+  //               </Text>
+  //               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
+  //             </View>
+  //           </TouchableOpacity>
+  //         </IslandCard>
+
+  //         {/* Préférences */}
+  //         <IslandCard>
+  //           <Text style={[styles.sectionTitle, { color: colors.text }]}>
+  //             <Ionicons name="settings" size={20} color={colors.text} />{" "}
+  //             Préférences
+  //           </Text>
+
+  //           <View
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons name="notifications" size={22} color={colors.text} />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Notifications
+  //               </Text>
+  //             </View>
+  //             <Switch
+  //               value={notifications}
+  //               onValueChange={setNotifications}
+  //               trackColor={{ false: "#767577", true: colors.primary }}
+  //               thumbColor={notifications ? "#fff" : "#f4f3f4"}
+  //             />
+  //           </View>
+
+  //           <View
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons name="finger-print" size={22} color={colors.text} />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Biométrie
+  //               </Text>
+  //             </View>
+  //             <Switch
+  //               value={biometric}
+  //               onValueChange={setBiometric}
+  //               trackColor={{ false: "#767577", true: colors.primary }}
+  //               thumbColor={biometric ? "#fff" : "#f4f3f4"}
+  //             />
+  //           </View>
+
+  //             onPress={() => {
+  //               const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"];
+  //               const currentIndex = currencies.indexOf(currency);
+  //               const nextCurrency = currencies[
+  //                 (currentIndex + 1) % currencies.length
+  //               ] as any;
+  //               setCurrency(nextCurrency);
+  //             }}
+  //           </TouchableOpacity>
+  //          </IslandCard>
+
+  // <IslandCard>
+  //             <TouchableOpacity
+  //                 onPress={toggleTheme}
+  //             >
+  //                 <View style={styles.settingLeft}>
+
+  //                 <Ionicons
+  //                   name={theme === "light" ? "sunny" : "moon"}
+  //                   size={22}
+  //                   color={theme === "light" ? "#FDB813" : "#F1C40F"}
+  //                 />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Mode {theme === "light" ? "Clair" : "Sombre"}
+  //               </Text>
+  //             </View>
+  //             <View style={styles.settingRight}>
+  //               <Text style={[styles.settingValue, { color: colors.icon }]}>
+  //                 {theme === "light" ? "Clair" : "Sombre"} {currency}
+  //               </Text>
+  //               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
+  //             </View>
+  //           </TouchableOpacity>
+  //         </IslandCard>
+
+  //         {/* Préférences */}
+  //         <IslandCard>
+  //           <Text style={[styles.sectionTitle, { color: colors.text }]}>
+  //             <Ionicons name="settings" size={20} color={colors.text} />{" "}
+  //             Préférences
+  //           </Text>
+
+  //           <View
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons name="notifications" size={22} color={colors.text} />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Notifications
+  //               </Text>
+  //             </View>
+  //             <Switch
+  //               value={notifications}
+  //               onValueChange={setNotifications}
+  //               trackColor={{ false: "#767577", true: colors.primary }}
+  //               thumbColor={notifications ? "#fff" : "#f4f3f4"}
+  //             />
+  //           </View>
+
+  //           <View
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons name="finger-print" size={22} color={colors.text} />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Biométrie
+  //               </Text>
+  //             </View>
+  //             <Switch
+  //               value={biometric}
+  //               onValueChange={setBiometric}
+  //               trackColor={{ false: "#767577", true: colors.primary }}
+  //               thumbColor={biometric ? "#fff" : "#f4f3f4"}
+  //             />
+  //           </View>
+
+  //           <TouchableOpacity
+  //             style={[
+  //               styles.settingRow,
+  //               { borderBottomColor: colors.icon + "20" },
+  //             ]}
+  //             onPress={() => {
+  //               // const currencies = ["EUR", "USD", "GBP", "CHF"];
+  //               const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"]; // ← Ajout de ARS
+  //               const currentIndex = currencies.indexOf(currency);
+  //               // const nextCurrency =
+  //               //   currencies[(currentIndex + 1) % currencies.length];
+  //               // setCurrency(nextCurrency);
+  //               const nextCurrency = currencies[
+  //                 (currentIndex + 1) % currencies.length
+  //               ] as "EUR" | "USD" | "GBP" | "CHF" | "ARS";
+  //               setCurrency(nextCurrency);
+  //             }}
+  //           >
+  //             <View style={styles.settingLeft}>
+  //               <Ionicons name="cash" size={22} color={colors.text} />
+  //               <Text style={[styles.settingLabel, { color: colors.text }]}>
+  //                 Devise
+  //               </Text>
+  //             </View>
+  //             <View style={styles.settingRight}>
+  //               <Text style={[styles.settingValue, { color: colors.primary }]}>
+  //                 {currency}
+  //               </Text>
+  //               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
+  //             </View>
+  //           </TouchableOpacity>
+  //         </IslandCard>
+
   return (
-    <BackgroundImage
-      // key={`bg-loading-${forceUpdate}`}
-      opacity={0.9}
-      blurRadius={2}
-    >
+    <BackgroundImage opacity={0.9} blurRadius={2}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Apparence */}
         <IslandCard>
@@ -92,16 +290,7 @@ export default function SystemView() {
               styles.settingRow,
               { borderBottomColor: colors.icon + "20" },
             ]}
-            // onPress={handleToggleTheme}
-            // onPress={toggleTheme}
-            onPress={() => {
-              const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"];
-              const currentIndex = currencies.indexOf(currency);
-              const nextCurrency = currencies[
-                (currentIndex + 1) % currencies.length
-              ] as any;
-              setCurrency(nextCurrency);
-            }}
+            onPress={toggleTheme}
           >
             <View style={styles.settingLeft}>
               <Ionicons
@@ -115,7 +304,7 @@ export default function SystemView() {
             </View>
             <View style={styles.settingRight}>
               <Text style={[styles.settingValue, { color: colors.icon }]}>
-                {theme === "light" ? "Clair" : "Sombre"} {currency}
+                {theme === "light" ? "Clair" : "Sombre"}
               </Text>
               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
             </View>
@@ -169,21 +358,17 @@ export default function SystemView() {
             />
           </View>
 
+          {/* Devise */}
           <TouchableOpacity
             style={[
               styles.settingRow,
               { borderBottomColor: colors.icon + "20" },
             ]}
             onPress={() => {
-              // const currencies = ["EUR", "USD", "GBP", "CHF"];
-              const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"]; // ← Ajout de ARS
+              const currencies = ["EUR", "USD", "GBP", "CHF", "ARS"] as const;
               const currentIndex = currencies.indexOf(currency);
-              // const nextCurrency =
-              //   currencies[(currentIndex + 1) % currencies.length];
-              // setCurrency(nextCurrency);
-              const nextCurrency = currencies[
-                (currentIndex + 1) % currencies.length
-              ] as "EUR" | "USD" | "GBP" | "CHF" | "ARS";
+              const nextCurrency =
+                currencies[(currentIndex + 1) % currencies.length];
               setCurrency(nextCurrency);
             }}
           >
