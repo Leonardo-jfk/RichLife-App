@@ -763,7 +763,7 @@ export default function HomeScreen() {
                 Revenus
               </Text>
               <Text style={[styles.statValue, { color: COLORS.income }]}>
-                {formatCurrency(monthlyIncome)} {currency}
+                {formatCurrency(monthlyIncome)}
               </Text>
             </TouchableOpacity>
 
@@ -776,7 +776,7 @@ export default function HomeScreen() {
                 Dépenses
               </Text>
               <Text style={[styles.statValue, { color: COLORS.expense }]}>
-                {formatCurrency(monthlyExpenses)} {currency}
+                {formatCurrency(monthlyExpenses)}
               </Text>
             </TouchableOpacity>
           </View>
@@ -798,11 +798,10 @@ export default function HomeScreen() {
                 },
               ]}
             >
-              {formatCurrency(stats.totalSavings)} {currency}
+              {formatCurrency(stats.totalSavings)}
             </Text>
             <Text style={[styles.projectionText, { color: colors.text }]}>
-              Projection annuelle: {formatCurrency(stats.projectedSavings)}{" "}
-              {currency}
+              Projection annuelle: {formatCurrency(stats.projectedSavings)}
             </Text>
           </View>
         </IslandCard>

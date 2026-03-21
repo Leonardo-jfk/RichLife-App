@@ -83,7 +83,7 @@ interface Goal {
 export default function ExploreScreen() {
   const themeContext = useTheme();
   const colors = themeContext.colors as any;
-  const { formatCurrency } = useCurrency();
+  const { formatCurrency, currency } = useCurrency();
   colors.textLight = colors.textLight ?? colors.textDark ?? colors.text;
   const [activeTab, setActiveTab] = useState("dreams");
   const [dreams, setDreams] = useState<Dream[]>([]);
@@ -393,7 +393,7 @@ export default function ExploreScreen() {
               Objectif
             </Text>
             <Text style={[styles.amountValue, { color: colors.text }]}>
-              {formatCurrency(item.targetAmount)}
+              {formatCurrency(item.targetAmount)} {currency}
             </Text>
           </View>
           <View>
@@ -401,7 +401,7 @@ export default function ExploreScreen() {
               Épargné
             </Text>
             <Text style={[styles.amountValue, { color: colors.income }]}>
-              {formatCurrency(item.currentAmount)}
+              {formatCurrency(item.currentAmount)} {currency}
             </Text>
           </View>
           <View>
@@ -409,7 +409,7 @@ export default function ExploreScreen() {
               Reste
             </Text>
             <Text style={[styles.amountValue, { color: colors.warning }]}>
-              {formatCurrency(remaining)}
+              {formatCurrency(remaining)} {currency}
             </Text>
           </View>
         </View>
@@ -609,7 +609,7 @@ export default function ExploreScreen() {
               Actuel
             </Text>
             <Text style={[styles.amountValue, { color: colors.income }]}>
-              {formatCurrency(item.currentAmount)}
+              {formatCurrency(item.currentAmount)} {currency}
             </Text>
           </View>
           <View>
