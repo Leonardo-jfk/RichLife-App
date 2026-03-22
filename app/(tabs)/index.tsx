@@ -329,7 +329,6 @@ export default function HomeScreen() {
               <Text style={[styles.projectAmount, { color: colors.text }]}>
                 {formatCurrency(totalDreamsCurrent)}
               </Text>
-              <Text>{formatCurrency(totalDreamsCurrent)}</Text>
             </View>
             <View style={styles.progressBarContainer}>
               <View
