@@ -118,7 +118,7 @@
 // });
 
 import React, { useCallback, useEffect, useState } from "react";
-import { ImageBackground, StyleSheet, ViewStyle } from "react-native";
+import { ImageBackground, StyleSheet, View, ViewStyle } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 
 // Définition des thèmes d'images disponibles
@@ -161,19 +161,63 @@ const IMAGE_CONFIG = {
   },
 };
 
+interface BackgroundImageProps {
+  children: React.ReactNode;
+  style?: ViewStyle;
+  opacity?: number;
+  blurRadius?: number;
+  imageTheme?: ImageTheme;
+  overlayColor?: string; // Nouvelle prop
+  overlayOpacity?: number; // Nouvelle prop
+}
+
+// export default function BackgroundImage({
+//   children,
+//   style,
+//   opacity = 0.6,
+//   blurRadius = 2,
+//   imageTheme = "default", // ← Par défaut, utilise l'image par défaut
+// }: BackgroundImageProps) {
+//   const { theme } = useTheme();
+
+//   // const getImageSource = () => {
+//   //   const config = IMAGE_CONFIG[imageTheme];
+//   //   return theme === "dark" ? config.dark : config.light;
+//   // };
+//   const getImageSource = useCallback(() => {
+//     const config = IMAGE_CONFIG[imageTheme];
+//     return theme === "dark" ? config.dark : config.light;
+//   }, [theme, imageTheme]);
+
+//   const [imageSource, setImageSource] = useState(getImageSource());
+
+//   useEffect(() => {
+//     setImageSource(getImageSource());
+//   }, [getImageSource]);
+
+//   return (
+//     <ImageBackground
+//       source={imageSource}
+//       style={[styles.container, style]}
+//       imageStyle={{ opacity }}
+//       blurRadius={blurRadius}
+//     >
+//       {children}
+//     </ImageBackground>
+//   );
+// }
+
 export default function BackgroundImage({
   children,
   style,
   opacity = 0.6,
   blurRadius = 2,
-  imageTheme = "default", // ← Par défaut, utilise l'image par défaut
+  imageTheme = "default",
+  overlayColor = "#000000", // Noir par défaut
+  overlayOpacity = 0.3, // 30% d'opacité
 }: BackgroundImageProps) {
   const { theme } = useTheme();
 
-  // const getImageSource = () => {
-  //   const config = IMAGE_CONFIG[imageTheme];
-  //   return theme === "dark" ? config.dark : config.light;
-  // };
   const getImageSource = useCallback(() => {
     const config = IMAGE_CONFIG[imageTheme];
     return theme === "dark" ? config.dark : config.light;
@@ -192,6 +236,13 @@ export default function BackgroundImage({
       imageStyle={{ opacity }}
       blurRadius={blurRadius}
     >
+      {/* Overlay de couleur */}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          { backgroundColor: overlayColor, opacity: overlayOpacity },
+        ]}
+      />
       {children}
     </ImageBackground>
   );

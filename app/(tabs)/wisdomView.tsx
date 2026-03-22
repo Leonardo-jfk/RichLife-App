@@ -288,7 +288,14 @@ export default function WisdomView() {
   });
 
   return (
-    <BackgroundImage imageTheme="wisdom" opacity={0.5} blurRadius={2}>
+    // <BackgroundImage imageTheme="wisdom" opacity={0.92} blurRadius={2}>
+    <BackgroundImage
+      imageTheme="wisdom"
+      opacity={0.9}
+      blurRadius={2}
+      overlayColor="#000000"
+      overlayOpacity={0.4}
+    >
       <ScrollView
         // contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
