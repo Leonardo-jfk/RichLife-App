@@ -310,7 +310,8 @@ export default function WisdomView() {
           💡 Sagesse Financière
         </Text> */}
         <Text style={[styles.headerSubtitle, { color: colors.textLight }]}>
-          Les mots des plus grands
+          La vraie richesse ne est pas de dépenser des millions, mais de vivre
+          heureux avec 5 à 10 % de ses revenus.
         </Text>
 
         {/* Conseils par situation */}

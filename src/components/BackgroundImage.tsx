@@ -117,6 +117,143 @@
 //   },
 // });
 
+// import React, { useCallback, useEffect, useState } from "react";
+// import { ImageBackground, StyleSheet, View, ViewStyle } from "react-native";
+// import { useTheme } from "../context/ThemeContext";
+
+// // Définition des thèmes d'images disponibles
+// export type ImageTheme =
+//   | "default"
+//   | "wisdom"
+//   | "transactions"
+//   | "goals"
+//   | "system";
+
+// interface BackgroundImageProps {
+//   children: React.ReactNode;
+//   style?: ViewStyle;
+//   opacity?: number;
+//   blurRadius?: number;
+//   imageTheme?: ImageTheme; // ← Nouvelle prop pour choisir le thème d'image
+// }
+
+// // Configuration des images par thème et par mode
+// const IMAGE_CONFIG = {
+//   default: {
+//     dark: require("../../assets/images/RichBackDark.jpg"),
+//     light: require("../../assets/images/RichBackLight.jpg"),
+//   },
+//   wisdom: {
+//     dark: require("../../assets/images/Mates.jpg"),
+//     light: require("../../assets/images/ArgSticker.jpg"),
+//   },
+//   transactions: {
+//     dark: require("../../assets/images/100FR.jpg"),
+//     light: require("../../assets/images/50FR.jpg"),
+//   },
+//   goals: {
+//     dark: require("../../assets/images/RichBackDark.jpg"),
+//     light: require("../../assets/images/RichBackLight.jpg"),
+//   },
+//   system: {
+//     dark: require("../../assets/images/100FR.jpg"),
+//     light: require("../../assets/images/10FR.jpg"),
+//   },
+// };
+
+// interface BackgroundImageProps {
+//   children: React.ReactNode;
+//   style?: ViewStyle;
+//   opacity?: number;
+//   blurRadius?: number;
+//   imageTheme?: ImageTheme;
+//   overlayColor?: string; // Nouvelle prop
+//   overlayOpacity?: number; // Nouvelle prop
+// }
+
+// // export default function BackgroundImage({
+// //   children,
+// //   style,
+// //   opacity = 0.6,
+// //   blurRadius = 2,
+// //   imageTheme = "default", // ← Par défaut, utilise l'image par défaut
+// // }: BackgroundImageProps) {
+// //   const { theme } = useTheme();
+
+// //   // const getImageSource = () => {
+// //   //   const config = IMAGE_CONFIG[imageTheme];
+// //   //   return theme === "dark" ? config.dark : config.light;
+// //   // };
+// //   const getImageSource = useCallback(() => {
+// //     const config = IMAGE_CONFIG[imageTheme];
+// //     return theme === "dark" ? config.dark : config.light;
+// //   }, [theme, imageTheme]);
+
+// //   const [imageSource, setImageSource] = useState(getImageSource());
+
+// //   useEffect(() => {
+// //     setImageSource(getImageSource());
+// //   }, [getImageSource]);
+
+// //   return (
+// //     <ImageBackground
+// //       source={imageSource}
+// //       style={[styles.container, style]}
+// //       imageStyle={{ opacity }}
+// //       blurRadius={blurRadius}
+// //     >
+// //       {children}
+// //     </ImageBackground>
+// //   );
+// // }
+
+// export default function BackgroundImage({
+//   children,
+//   style,
+//   opacity = 0.6,
+//   blurRadius = 2,
+//   imageTheme = "default",
+//   overlayColor = "#000000", // Noir par défaut
+//   overlayOpacity = 0.3, // 30% d'opacité
+// }: BackgroundImageProps) {
+//   const { theme } = useTheme();
+
+//   const getImageSource = useCallback(() => {
+//     const config = IMAGE_CONFIG[imageTheme];
+//     return theme === "dark" ? config.dark : config.light;
+//   }, [theme, imageTheme]);
+
+//   const [imageSource, setImageSource] = useState(getImageSource());
+
+//   useEffect(() => {
+//     setImageSource(getImageSource());
+//   }, [getImageSource]);
+
+//   return (
+//     <ImageBackground
+//       source={imageSource}
+//       style={[styles.container, style]}
+//       imageStyle={{ opacity }}
+//       blurRadius={blurRadius}
+//     >
+//       {/* Overlay de couleur */}
+//       <View
+//         style={[
+//           StyleSheet.absoluteFill,
+//           { backgroundColor: overlayColor, opacity: overlayOpacity },
+//         ]}
+//       />
+//       {children}
+//     </ImageBackground>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+// });
+
 import React, { useCallback, useEffect, useState } from "react";
 import { ImageBackground, StyleSheet, View, ViewStyle } from "react-native";
 import { useTheme } from "../context/ThemeContext";
@@ -127,14 +264,19 @@ export type ImageTheme =
   | "wisdom"
   | "transactions"
   | "goals"
-  | "system";
+  | "system"
+  | "subtle";
 
 interface BackgroundImageProps {
   children: React.ReactNode;
   style?: ViewStyle;
   opacity?: number;
   blurRadius?: number;
-  imageTheme?: ImageTheme; // ← Nouvelle prop pour choisir le thème d'image
+  imageTheme?: ImageTheme;
+  overlayColor?: string;
+  overlayOpacity?: number;
+  darkOverlayColor?: string; // Nouvelle prop pour l'overlay en mode sombre
+  darkOverlayOpacity?: number; // Nouvelle prop pour l'opacité en mode sombre
 }
 
 // Configuration des images par thème et par mode
@@ -159,53 +301,11 @@ const IMAGE_CONFIG = {
     dark: require("../../assets/images/100FR.jpg"),
     light: require("../../assets/images/10FR.jpg"),
   },
+  subtle: {
+    dark: require("../../assets/images/RichBackDark.jpg"),
+    light: require("../../assets/images/RichBackLight.jpg"),
+  },
 };
-
-interface BackgroundImageProps {
-  children: React.ReactNode;
-  style?: ViewStyle;
-  opacity?: number;
-  blurRadius?: number;
-  imageTheme?: ImageTheme;
-  overlayColor?: string; // Nouvelle prop
-  overlayOpacity?: number; // Nouvelle prop
-}
-
-// export default function BackgroundImage({
-//   children,
-//   style,
-//   opacity = 0.6,
-//   blurRadius = 2,
-//   imageTheme = "default", // ← Par défaut, utilise l'image par défaut
-// }: BackgroundImageProps) {
-//   const { theme } = useTheme();
-
-//   // const getImageSource = () => {
-//   //   const config = IMAGE_CONFIG[imageTheme];
-//   //   return theme === "dark" ? config.dark : config.light;
-//   // };
-//   const getImageSource = useCallback(() => {
-//     const config = IMAGE_CONFIG[imageTheme];
-//     return theme === "dark" ? config.dark : config.light;
-//   }, [theme, imageTheme]);
-
-//   const [imageSource, setImageSource] = useState(getImageSource());
-
-//   useEffect(() => {
-//     setImageSource(getImageSource());
-//   }, [getImageSource]);
-
-//   return (
-//     <ImageBackground
-//       source={imageSource}
-//       style={[styles.container, style]}
-//       imageStyle={{ opacity }}
-//       blurRadius={blurRadius}
-//     >
-//       {children}
-//     </ImageBackground>
-//   );
-// }
 
 export default function BackgroundImage({
   children,
@@ -213,8 +313,10 @@ export default function BackgroundImage({
   opacity = 0.6,
   blurRadius = 2,
   imageTheme = "default",
-  overlayColor = "#000000", // Noir par défaut
-  overlayOpacity = 0.3, // 30% d'opacité
+  overlayColor = "#000000",
+  overlayOpacity = 0,
+  darkOverlayColor = "#000000", // Par défaut noir
+  darkOverlayOpacity = 0.4, // 40% d'opacité en mode sombre
 }: BackgroundImageProps) {
   const { theme } = useTheme();
 
@@ -229,6 +331,13 @@ export default function BackgroundImage({
     setImageSource(getImageSource());
   }, [getImageSource]);
 
+  // Déterminer si on doit afficher l'overlay et avec quels paramètres
+  const shouldShowOverlay = theme === "dark";
+  const finalOverlayColor = shouldShowOverlay ? darkOverlayColor : overlayColor;
+  const finalOverlayOpacity = shouldShowOverlay
+    ? darkOverlayOpacity
+    : overlayOpacity;
+
   return (
     <ImageBackground
       source={imageSource}
@@ -236,13 +345,18 @@ export default function BackgroundImage({
       imageStyle={{ opacity }}
       blurRadius={blurRadius}
     >
-      {/* Overlay de couleur */}
-      <View
-        style={[
-          StyleSheet.absoluteFill,
-          { backgroundColor: overlayColor, opacity: overlayOpacity },
-        ]}
-      />
+      {/* Overlay de couleur - uniquement en mode sombre */}
+      {shouldShowOverlay && finalOverlayOpacity > 0 && (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: finalOverlayColor,
+              opacity: finalOverlayOpacity,
+            },
+          ]}
+        />
+      )}
       {children}
     </ImageBackground>
   );
