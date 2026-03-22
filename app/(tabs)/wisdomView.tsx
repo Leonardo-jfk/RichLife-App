@@ -288,15 +288,20 @@ export default function WisdomView() {
   });
 
   return (
-    <BackgroundImage imageTheme="wisdom" opacity={0.5} blurRadius={3}>
+    <BackgroundImage imageTheme="wisdom" opacity={0.5} blurRadius={2}>
       <ScrollView
-        contentContainerStyle={styles.container}
+        // contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
+        <View style={styles.titleContainer}>
+          <Text style={[styles.title, { color: colors.text }]}>
+            💡 Sagesse Financière
+          </Text>
+        </View>
+        {/* <Text style={[styles.headerTitle, { color: colors.text }]}>
           💡 Sagesse Financière
-        </Text>
+        </Text> */}
         <Text style={[styles.headerSubtitle, { color: colors.textLight }]}>
           Les mots des plus grands
         </Text>
@@ -558,6 +563,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 8,
     gap: 6,
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: 80,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
   },
   categoryChipText: { fontSize: 14, fontWeight: "500" },
   tagsContainer: { flexDirection: "row", flexWrap: "wrap", marginBottom: 20 },
