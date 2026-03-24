@@ -774,7 +774,14 @@ export default function ExploreScreen() {
     <BackgroundImage imageTheme="default" opacity={0.6} blurRadius={2}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.titleContainer}>
-          <Text style={[styles.title, { color: colors.text }]}>
+          <Text
+            style={{
+              fontFamily: "FrenchScript",
+              fontSize: 40,
+              color: colors.text,
+              textAlign: "center",
+            }}
+          >
             Mes Objectifs
           </Text>
         </View>

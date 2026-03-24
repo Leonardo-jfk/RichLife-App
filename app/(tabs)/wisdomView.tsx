@@ -305,7 +305,7 @@ export default function WisdomView() {
           <Text
             style={{
               fontFamily: "FrenchScript",
-              fontSize: 28,
+              fontSize: 40,
               color: colors.text,
               textAlign: "center",
             }}
@@ -313,9 +313,6 @@ export default function WisdomView() {
             💡 Sagesse Financière
           </Text>
         </View>
-        {/* <Text style={[styles.headerTitle, { color: colors.text }]}>
-          💡 Sagesse Financière
-        </Text> */}
         <Text style={[styles.headerSubtitle, { color: colors.textLight }]}>
           La vraie richesse ne est pas de dépenser des millions, mais de vivre
           heureux avec 5 à 10 % de ses revenus.

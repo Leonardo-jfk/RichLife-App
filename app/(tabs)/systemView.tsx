@@ -77,6 +77,22 @@ export default function SystemView() {
   return (
     <BackgroundImage imageTheme="default" opacity={0.9} blurRadius={2}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.titleContainer}>
+          <Text
+            style={{
+              fontFamily: "FrenchScript",
+              fontSize: 40,
+              color: colors.text,
+              textAlign: "center",
+            }}
+          >
+            Time is limited
+          </Text>
+          {/* <Text style={[styles.title, { color: colors.text }]}>
+            Résumé du Mois
+          </Text> */}
+        </View>
+
         <IslandCard>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             <Ionicons name="color-palette" size={20} color={colors.text} />{" "}
@@ -391,6 +407,20 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
+  },
+  titleContainer: {
+    alignItems: "center", // ← Centre verticalement le contenu
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 8,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    paddingTop: 80,
+  },
+  title: {
+    // ← Défini ici
+    fontSize: 28,
+    fontWeight: "bold",
   },
   sectionTitle: {
     fontSize: 18,

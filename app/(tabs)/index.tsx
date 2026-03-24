@@ -123,7 +123,14 @@ export default function HomeScreen() {
       <ScrollView style={styles.scrollView}>
         {/* Header sans bouton de thème */}
         <View style={styles.titleContainer}>
-          <Text style={[styles.title, { color: colors.text }]}>
+          <Text
+            style={{
+              fontFamily: "FrenchScript",
+              fontSize: 40,
+              color: colors.text,
+              textAlign: "center",
+            }}
+          >
             Résumé du Mois
           </Text>
           {/* <Text style={[styles.title, { color: colors.text }]}>
