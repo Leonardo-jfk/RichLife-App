@@ -310,7 +310,7 @@ export default function WisdomView() {
               textAlign: "center",
             }}
           >
-            💡 Sagesse Financière
+            Sagesse Financière
           </Text>
         </View>
         <Text style={[styles.headerSubtitle, { color: colors.textLight }]}>
@@ -548,7 +548,12 @@ export default function WisdomView() {
 const styles = StyleSheet.create({
   container: { padding: 20, paddingTop: 60, paddingBottom: 40 },
   headerTitle: { fontSize: 32, fontWeight: "bold", marginBottom: 8 },
-  headerSubtitle: { fontSize: 14, marginBottom: 24 },
+  headerSubtitle: {
+    fontSize: 14,
+    marginBottom: 24,
+    marginHorizontal: 16,
+    textAlign: "center",
+  },
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
