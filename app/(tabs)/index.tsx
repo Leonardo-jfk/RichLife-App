@@ -1,8 +1,287 @@
+// import { Ionicons } from "@expo/vector-icons";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { useFocusEffect } from "@react-navigation/native";
+// import { useRouter } from "expo-router";
+// import React, { useCallback, useState } from "react";
+// import {
+//   Alert,
+//   Modal,
+//   ScrollView,
+//   StyleSheet,
+//   Text,
+//   TextInput,
+//   TouchableOpacity,
+//   View,
+// } from "react-native";
+// import BackgroundImage from "../../src/components/BackgroundImage";
+// import IslandCard from "../../src/components/IslandCard";
+// import { COLORS } from "../../src/constants/colors";
+// import { useTheme } from "../../src/context/ThemeContext";
+// import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
+// import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
+// // import { formatCurrency } from "../../src/utils/formatters";
+// import { useCurrency } from "../../src/context/CurrencyContext";
+// import { loadTransactions, saveTransactions } from "../../src/utils/storage";
+
+// // Dans index.tsx, ajoutez après les imports :
+// import { useDailyBudget } from "../../src/hooks/useDailyBudget";
+// // / Types
+
+// // Dans index.tsx, ajoutez après les imports :
+// // import { loadTransactions } from "../../src/utils/storage";
+
+// interface Transaction {
+//   id: string;
+//   type: "income" | "expense";
+//   amount: number;
+//   description: string;
+//   category: string;
+//   date: string;
+// }
+
+// export default function HomeScreen() {
+//   const router = useRouter();
+//   const { colors, isLoading, theme } = useTheme(); // ← Plus de toggleTheme ici
+//   const [forceUpdate, setForceUpdate] = useState(0);
+
+//   // États pour les rêves et objectifs
+//   const [dreams, setDreams] = useState<Dream[]>([]);
+//   const [goals, setGoals] = useState<Goal[]>([]);
+
+//   // États pour les transactions
+//   // const [refreshing, setRefreshing] = useState(false);
+
+//   // États pour les revenus/dépenses
+//   // const [monthlyIncome, setMonthlyIncome] = useState(2500);
+//   // const [monthlyExpenses, setMonthlyExpenses] = useState(1800);
+//   const [showIncomeModal, setShowIncomeModal] = useState(false);
+//   const [tempIncome, setTempIncome] = useState("2500");
+//   const [tempExpenses, setTempExpenses] = useState("1800");
+//   // const [newCreditAmount, setNewCreditAmount] = useState("");
+//   // const [newCreditTitle, setNewCreditTitle] = useState("");
+//   // const [newCreditMonths, setNewCreditMonths] = useState("12");
+
+//   // Charger toutes les données
+//   // const loadAllData = async () => {
+//   //   try {
+//   //     // Charger rêves et objectifs
+//   //     const [dreamsData, goalsData] = await Promise.all([
+//   //       AsyncStorage.getItem(STORAGE_KEYS.DREAMS),
+//   //       AsyncStorage.getItem(STORAGE_KEYS.GOALS),
+//   //     ]);
+//   //     setDreams(dreamsData ? JSON.parse(dreamsData) : []);
+//   //     setGoals(goalsData ? JSON.parse(goalsData) : []);
+
+//   //     // Charger transactions
+//   //   } catch (error) {
+//   //     console.error("Erreur chargement:", error);
+//   //   }
+//   // };
+
+//   useFocusEffect(
+//     useCallback(() => {
+//       loadAllData();
+//     }, []),
+//   );
+
+//   // Stats mensuelles des rêves/objectifs
+//   const stats = useMonthlyStats(dreams, goals, monthlyIncome, monthlyExpenses);
+
+//   // Totaux combinés
+//   const totalDreamsCurrent = dreams.reduce(
+//     (sum, d) => sum + (d.currentAmount || 0),
+//     0,
+//   );
+//   const totalGoalsCurrent = goals.reduce(
+//     (sum, g) => sum + (g.currentAmount || 0),
+//     0,
+//   );
+
+//   // Dans le composant, après les stats :
+//   const {
+//     dailyBudget,
+//     remainingMonthlyBudget,
+//     remainingDays,
+//     credits,
+//     totalMonthlyCreditPayments,
+//     addCredit,
+
+//     deleteCredit,
+//   } = useDailyBudget(monthlyIncome, monthlyExpenses, dreams, goals);
+
+//   // Ajoutez un état pour le modal des crédits
+//   const [showCreditModal, setShowCreditModal] = useState(false);
+//   const [newCredit, setNewCredit] = useState({
+//     title: "",
+//     totalAmount: "",
+//     remainingMonths: "12",
+//     monthlyPayment: "",
+//     description: "",
+//   });
+
+//   // Fonctions pour modifier les revenus/dépenses
+//   // const handleSaveIncome = () => {
+//   //   const value = parseFloat(tempIncome);
+//   //   if (!isNaN(value) && value >= 0) {
+//   //     setMonthlyIncome(value);
+//   //   }
+//   //   setShowIncomeModal(false);
+//   // };
+
+//   // const handleSaveExpenses = () => {
+//   //   const value = parseFloat(tempExpenses);
+//   //   if (!isNaN(value) && value >= 0) {
+//   //     setMonthlyExpenses(value);
+//   //   }
+//   //   setShowIncomeModal(false);
+//   // };
+
+//   // Fonctions pour modifier les revenus/dépenses (créer des transactions)
+// const handleSaveIncome = () => {
+//   const value = parseFloat(tempIncome);
+//   if (!isNaN(value) && value > 0) {
+//     // Créer une transaction de revenu
+//     const newTransaction: Transaction = {
+//       id: Date.now().toString(),
+//       type: "income",
+//       amount: value,
+//       description: "Ajustement manuel",
+//       category: "salary",
+//       date: new Date().toISOString(),
+//     };
+//     const newTransactions = [newTransaction, ...transactions];
+//     setTransactions(newTransactions);
+//     saveTransactions(newTransactions);
+//   }
+//   setShowIncomeModal(false);
+// };
+
+// const handleSaveExpenses = () => {
+//   const value = parseFloat(tempExpenses);
+//   if (!isNaN(value) && value > 0) {
+//     // Créer une transaction de dépense
+//     const newTransaction: Transaction = {
+//       id: Date.now().toString(),
+//       type: "expense",
+//       amount: value,
+//       description: "Ajustement manuel",
+//       category: "other",
+//       date: new Date().toISOString(),
+//     };
+//     const newTransactions = [newTransaction, ...transactions];
+//     setTransactions(newTransactions);
+//     saveTransactions(newTransactions);
+//   }
+//   setShowIncomeModal(false);
+// };
+
+//   const { formatCurrency } = useCurrency();
+
+//   // const handleAddCredit = () => {
+//   //   if (!newCreditAmount || !newCreditTitle) return;
+
+//   //   addCredit({
+//   //     title: newCreditTitle,
+//   //     totalAmount: parseFloat(newCreditAmount),
+//   //     remainingMonths: parseInt(newCreditMonths),
+//   //     monthlyPayment: parseFloat(newCreditAmount) / parseInt(newCreditMonths),
+//   //     startDate: new Date().toISOString(),
+//   //     description: "Achat exceptionnel à amortir",
+//   //   });
+
+//   //   // Reset
+//   //   setNewCreditAmount("");
+//   //   setNewCreditTitle("");
+//   //   setShowCreditModal(false);
+//   // };
+
+//   // Ajoutez un état pour les transactions :
+// const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+// // Modifiez loadAllData pour charger aussi les transactions :
+// const loadAllData = async () => {
+//   try {
+//     // Charger rêves et objectifs
+//     const [dreamsData, goalsData, transactionsData] = await Promise.all([
+//       AsyncStorage.getItem(STORAGE_KEYS.DREAMS),
+//       AsyncStorage.getItem(STORAGE_KEYS.GOALS),
+//       loadTransactions(), // ← Ajouter cette ligne
+//     ]);
+//     setDreams(dreamsData ? JSON.parse(dreamsData) : []);
+//     setGoals(goalsData ? JSON.parse(goalsData) : []);
+//     setTransactions(transactionsData); // ← Ajouter cette ligne
+//   } catch (error) {
+//     console.error("Erreur chargement:", error);
+//   }
+// };
+
+// // Dans index.tsx, remplacez les states monthlyIncome et monthlyExpenses
+// // par des valeurs calculées à partir des transactions :
+
+// // Calculer les revenus et dépenses du mois en cours à partir des transactions
+// const getCurrentMonthTransactions = () => {
+//   const now = new Date();
+//   const currentMonth = now.getMonth();
+//   const currentYear = now.getFullYear();
+
+//   return transactions.filter(t => {
+//     const date = new Date(t.date);
+//     return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+//   });
+// };
+
+// const currentMonthTransactions = getCurrentMonthTransactions();
+// const calculatedIncome = currentMonthTransactions
+//   .filter(t => t.type === "income")
+//   .reduce((sum, t) => sum + t.amount, 0);
+
+// const calculatedExpenses = currentMonthTransactions
+//   .filter(t => t.type === "expense")
+//   .reduce((sum, t) => sum + t.amount, 0);
+
+// // Utilisez ces valeurs calculées au lieu des states
+// const [monthlyIncome, setMonthlyIncome] = useState(calculatedIncome || 2500);
+// const [monthlyExpenses, setMonthlyExpenses] = useState(calculatedExpenses || 1800);
+
+//   // Mettre à jour forceUpdate quand le thème change
+//   React.useEffect(() => {
+//     setForceUpdate((prev) => prev + 1);
+//   }, [theme]);
+//   // Mettez à jour quand les transactions changent
+
+// useEffect(() => {
+//   const income = currentMonthTransactions
+//     .filter(t => t.type === "income")
+//     .reduce((sum, t) => sum + t.amount, 0);
+//   const expenses = currentMonthTransactions
+//     .filter(t => t.type === "expense")
+//     .reduce((sum, t) => sum + t.amount, 0);
+
+//   setMonthlyIncome(income || 0);
+//   setMonthlyExpenses(expenses || 0);
+// }, [transactions]);
+
+//   if (isLoading) {
+//     return (
+//       <BackgroundImage
+//         key={`bg-loading-${forceUpdate}`}
+//         opacity={0.6}
+//         blurRadius={2}
+//       >
+//         <View style={styles.loadingContainer}>
+//           <Text style={[styles.loadingText, { color: colors.text }]}>
+//             Chargement...
+//           </Text>
+//         </View>
+//       </BackgroundImage>
+//     );
+//   }
+
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Modal,
@@ -16,50 +295,94 @@ import {
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
 import { COLORS } from "../../src/constants/colors";
+import { useCurrency } from "../../src/context/CurrencyContext";
 import { useTheme } from "../../src/context/ThemeContext";
+import { useDailyBudget } from "../../src/hooks/useDailyBudget";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
-// import { formatCurrency } from "../../src/utils/formatters";
-import { useCurrency } from "../../src/context/CurrencyContext";
+import { loadTransactions, saveTransactions } from "../../src/utils/storage";
 
-// Dans index.tsx, ajoutez après les imports :
-import { useDailyBudget } from "../../src/hooks/useDailyBudget";
-// / Types
+interface Transaction {
+  id: string;
+  type: "income" | "expense";
+  amount: number;
+  description: string;
+  category: string;
+  date: string;
+}
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { colors, isLoading, theme } = useTheme(); // ← Plus de toggleTheme ici
+  const { colors, isLoading, theme } = useTheme();
   const [forceUpdate, setForceUpdate] = useState(0);
+  const { formatCurrency } = useCurrency();
 
-  // États pour les rêves et objectifs
+  // États
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // États pour les transactions
-  // const [refreshing, setRefreshing] = useState(false);
-
-  // États pour les revenus/dépenses
-  const [monthlyIncome, setMonthlyIncome] = useState(2500);
-  const [monthlyExpenses, setMonthlyExpenses] = useState(1800);
+  // États pour les revenus/dépenses (initialisés à 0)
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(0);
   const [showIncomeModal, setShowIncomeModal] = useState(false);
-  const [tempIncome, setTempIncome] = useState("2500");
-  const [tempExpenses, setTempExpenses] = useState("1800");
-  const [newCreditAmount, setNewCreditAmount] = useState("");
-  const [newCreditTitle, setNewCreditTitle] = useState("");
-  const [newCreditMonths, setNewCreditMonths] = useState("12");
+  const [tempIncome, setTempIncome] = useState("0");
+  const [tempExpenses, setTempExpenses] = useState("0");
+
+  // État pour les crédits
+  const [showCreditModal, setShowCreditModal] = useState(false);
+  const [newCredit, setNewCredit] = useState({
+    title: "",
+    totalAmount: "",
+    remainingMonths: "12",
+    monthlyPayment: "",
+    description: "",
+  });
+
+  // Fonction pour calculer les revenus/dépenses du mois courant
+  const calculateMonthlyTotals = useCallback(() => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const currentMonthTransactions = transactions.filter((t) => {
+      const date = new Date(t.date);
+      return (
+        date.getMonth() === currentMonth && date.getFullYear() === currentYear
+      );
+    });
+
+    const income = currentMonthTransactions
+      .filter((t) => t.type === "income")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const expenses = currentMonthTransactions
+      .filter((t) => t.type === "expense")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    return { income, expenses };
+  }, [transactions]);
+
+  // Mettre à jour les revenus/dépenses quand les transactions changent
+  useEffect(() => {
+    const { income, expenses } = calculateMonthlyTotals();
+    setMonthlyIncome(income);
+    setMonthlyExpenses(expenses);
+    setTempIncome(income.toString());
+    setTempExpenses(expenses.toString());
+  }, [transactions, calculateMonthlyTotals]);
 
   // Charger toutes les données
   const loadAllData = async () => {
     try {
-      // Charger rêves et objectifs
-      const [dreamsData, goalsData] = await Promise.all([
+      const [dreamsData, goalsData, transactionsData] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.DREAMS),
         AsyncStorage.getItem(STORAGE_KEYS.GOALS),
+        loadTransactions(),
       ]);
       setDreams(dreamsData ? JSON.parse(dreamsData) : []);
       setGoals(goalsData ? JSON.parse(goalsData) : []);
-
-      // Charger transactions
+      setTransactions(transactionsData);
     } catch (error) {
       console.error("Erreur chargement:", error);
     }
@@ -84,7 +407,7 @@ export default function HomeScreen() {
     0,
   );
 
-  // Dans le composant, après les stats :
+  // Budget quotidien
   const {
     dailyBudget,
     remainingMonthlyBudget,
@@ -92,59 +415,48 @@ export default function HomeScreen() {
     credits,
     totalMonthlyCreditPayments,
     addCredit,
-
     deleteCredit,
   } = useDailyBudget(monthlyIncome, monthlyExpenses, dreams, goals);
-
-  // Ajoutez un état pour le modal des crédits
-  const [showCreditModal, setShowCreditModal] = useState(false);
-  const [newCredit, setNewCredit] = useState({
-    title: "",
-    totalAmount: "",
-    remainingMonths: "12",
-    monthlyPayment: "",
-    description: "",
-  });
 
   // Fonctions pour modifier les revenus/dépenses
   const handleSaveIncome = () => {
     const value = parseFloat(tempIncome);
-    if (!isNaN(value) && value >= 0) {
-      setMonthlyIncome(value);
+    if (!isNaN(value) && value > 0) {
+      const newTransaction: Transaction = {
+        id: Date.now().toString(),
+        type: "income",
+        amount: value,
+        description: "Ajustement manuel",
+        category: "salary",
+        date: new Date().toISOString(),
+      };
+      const newTransactions = [newTransaction, ...transactions];
+      setTransactions(newTransactions);
+      saveTransactions(newTransactions);
     }
     setShowIncomeModal(false);
   };
 
   const handleSaveExpenses = () => {
     const value = parseFloat(tempExpenses);
-    if (!isNaN(value) && value >= 0) {
-      setMonthlyExpenses(value);
+    if (!isNaN(value) && value > 0) {
+      const newTransaction: Transaction = {
+        id: Date.now().toString(),
+        type: "expense",
+        amount: value,
+        description: "Ajustement manuel",
+        category: "other",
+        date: new Date().toISOString(),
+      };
+      const newTransactions = [newTransaction, ...transactions];
+      setTransactions(newTransactions);
+      saveTransactions(newTransactions);
     }
     setShowIncomeModal(false);
   };
 
-  const { formatCurrency } = useCurrency();
-
-  const handleAddCredit = () => {
-    if (!newCreditAmount || !newCreditTitle) return;
-
-    addCredit({
-      title: newCreditTitle,
-      totalAmount: parseFloat(newCreditAmount),
-      remainingMonths: parseInt(newCreditMonths),
-      monthlyPayment: parseFloat(newCreditAmount) / parseInt(newCreditMonths),
-      startDate: new Date().toISOString(),
-      description: "Achat exceptionnel à amortir",
-    });
-
-    // Reset
-    setNewCreditAmount("");
-    setNewCreditTitle("");
-    setShowCreditModal(false);
-  };
-
   // Mettre à jour forceUpdate quand le thème change
-  React.useEffect(() => {
+  useEffect(() => {
     setForceUpdate((prev) => prev + 1);
   }, [theme]);
 
@@ -383,7 +695,7 @@ export default function HomeScreen() {
         </Modal>
 
         {/* Modal pour gérer les crédits - UN SEUL */}
-        <Modal
+        {/* <Modal
           visible={showCreditModal}
           transparent
           animationType="slide"
@@ -406,7 +718,6 @@ export default function HomeScreen() {
               </View>
 
               <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Ajouter un crédit */}
                 <Text style={[styles.modalLabel, { color: colors.text }]}>
                   Nouveau crédit
                 </Text>
@@ -481,7 +792,6 @@ export default function HomeScreen() {
                   }}
                   keyboardType="numeric"
                   placeholderTextColor={colors.textLight}
-                /> */}
                 <TextInput
                   style={[
                     styles.modalInput,
@@ -561,10 +871,491 @@ export default function HomeScreen() {
                       Sauvegarder le crédit
                     </Text>
                   </TouchableOpacity>
+                </TouchableOpacity> 
+                
+*/}
+
+        {/* Modal pour gérer les crédits */}
+        {/* <Modal
+          visible={showCreditModal}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShowCreditModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View
+              style={[
+                styles.modalContent,
+                { backgroundColor: colors.background },
+              ]}
+            >
+              <View style={styles.modalHeader}>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>
+                  Gérer mes crédits
+                </Text>
+                <TouchableOpacity onPress={() => setShowCreditModal(false)}>
+                  <Ionicons name="close" size={24} color={colors.text} />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={[styles.modalLabel, { color: colors.text }]}>
+                  Nouveau crédit
+                </Text>
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Nom (ex: Vélo)"
+                  value={newCredit.title}
+                  onChangeText={(text) =>
+                    setNewCredit({ ...newCredit, title: text })
+                  }
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Montant total (€)"
+                  value={newCredit.totalAmount}
+                  onChangeText={(text) => {
+                    setNewCredit({ ...newCredit, totalAmount: text });
+                    const total = parseFloat(text);
+                    const months = parseFloat(newCredit.remainingMonths);
+                    if (!isNaN(total) && !isNaN(months) && months > 0) {
+                      setNewCredit({
+                        ...newCredit,
+                        monthlyPayment: (total / months).toFixed(2),
+                      });
+                    }
+                  }}
+                  keyboardType="numeric"
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Nombre de mois"
+                  value={newCredit.remainingMonths}
+                  onChangeText={(text) => {
+                    setNewCredit({ ...newCredit, remainingMonths: text });
+                    const total = parseFloat(newCredit.totalAmount);
+                    const months = parseFloat(text);
+                    if (!isNaN(total) && !isNaN(months) && months > 0) {
+                      setNewCredit({
+                        ...newCredit,
+                        monthlyPayment: (total / months).toFixed(2),
+                      });
+                    }
+                  }}
+                  keyboardType="numeric"
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <Text
+                  style={[
+                    styles.monthlyPaymentPreview,
+                    { color: colors.primary },
+                  ]}
+                >
+                  Mensualité:{" "}
+                  {formatCurrency(parseFloat(newCredit.monthlyPayment) || 0)}
+                </Text>
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Description (optionnel)"
+                  value={newCredit.description}
+                  onChangeText={(text) =>
+                    setNewCredit({ ...newCredit, description: text })
+                  }
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={() => {
+                    if (!newCredit.title || !newCredit.totalAmount) {
+                      Alert.alert("Erreur", "Veuillez remplir tous les champs");
+                      return;
+                    }
+                    addCredit({
+                      title: newCredit.title,
+                      totalAmount: parseFloat(newCredit.totalAmount),
+                      remainingMonths: parseInt(newCredit.remainingMonths),
+                      monthlyPayment: parseFloat(newCredit.monthlyPayment),
+                      startDate: new Date().toISOString(),
+                      description: newCredit.description,
+                    });
+                    setNewCredit({
+                      title: "",
+                      totalAmount: "",
+                      remainingMonths: "12",
+                      monthlyPayment: "",
+                      description: "",
+                    });
+                    setShowCreditModal(false);
+                  }}
+                >
+                  <Text style={{ color: "white", fontWeight: "600" }}>
+                    Ajouter un crédit
+                  </Text>
+                </TouchableOpacity>
+
+                <Text
+                  style={[
+                    styles.modalLabel,
+                    { color: colors.text, marginTop: 16 },
+                  ]}
+                >
+                  Mes crédits en cours
+                </Text>
+
+                {credits.map((credit) => {
+                  const remaining = credit.totalAmount - credit.paidAmount;
+                  const progress =
+                    (credit.paidAmount / credit.totalAmount) * 100;
+                  return (
+                    <View key={credit.id} style={styles.creditItem}>
+                      <View style={styles.creditHeader}>
+                        <Text
+                          style={[styles.creditTitle, { color: colors.text }]}
+                        >
+                          {credit.title}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => deleteCredit(credit.id)}
+                        >
+                          <Ionicons
+                            name="trash-outline"
+                            size={18}
+                            color={colors.danger}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <Text
+                        style={[
+                          styles.creditDescription,
+                          { color: colors.textLight },
+                        ]}
+                      >
+                        {credit.description}
+                      </Text>
+                      <View style={styles.creditProgressContainer}>
+                        <View style={styles.creditProgressBar}>
+                          <View
+                            style={[
+                              styles.creditProgressFill,
+                              {
+                                width: `${progress}%`,
+                                backgroundColor: colors.primary,
+                              },
+                            ]}
+                          />
+                        </View>
+                        <Text
+                          style={[
+                            styles.creditProgressText,
+                            { color: colors.textLight },
+                          ]}
+                        >
+                          {progress.toFixed(0)}%
+                        </Text>
+                      </View>
+                      <View style={styles.creditDetails}>
+                        <Text
+                          style={[styles.creditAmount, { color: colors.text }]}
+                        >
+                          Reste: {formatCurrency(remaining)}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.creditMonthly,
+                            { color: colors.primary },
+                          ]}
+                        >
+                          {formatCurrency(credit.monthlyPayment)}/mois
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </View>
+        </Modal> 
+        
+        */}
+
+        {/* Modal pour gérer les crédits - VERSION SIMPLIFIÉE */}
+        <Modal
+          visible={showCreditModal}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setShowCreditModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View
+              style={[
+                styles.modalContent,
+                { backgroundColor: colors.background },
+              ]}
+            >
+              <View style={styles.modalHeader}>
+                <Text style={[styles.modalTitle, { color: colors.text }]}>
+                  Gérer mes crédits
+                </Text>
+                <TouchableOpacity onPress={() => setShowCreditModal(false)}>
+                  <Ionicons name="close" size={24} color={colors.text} />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {/* Ajouter un crédit */}
+                <Text style={[styles.modalLabel, { color: colors.text }]}>
+                  Nouveau crédit
+                </Text>
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Nom (ex: Vélo)"
+                  value={newCredit.title}
+                  onChangeText={(text) =>
+                    setNewCredit({ ...newCredit, title: text })
+                  }
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Montant total (€)"
+                  value={newCredit.totalAmount}
+                  onChangeText={(text) => {
+                    // Mise à jour simple du montant
+                    setNewCredit({ ...newCredit, totalAmount: text });
+                  }}
+                  keyboardType="numeric"
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Nombre de mois"
+                  value={newCredit.remainingMonths}
+                  onChangeText={(text) => {
+                    setNewCredit({ ...newCredit, remainingMonths: text });
+                  }}
+                  keyboardType="numeric"
+                  placeholderTextColor={colors.textLight}
+                />
+
+                {/* Aperçu de la mensualité */}
+                <Text
+                  style={[
+                    styles.monthlyPaymentPreview,
+                    { color: colors.primary },
+                  ]}
+                >
+                  Mensualité estimée:{" "}
+                  {(() => {
+                    const total = parseFloat(newCredit.totalAmount);
+                    const months = parseFloat(newCredit.remainingMonths);
+                    if (!isNaN(total) && !isNaN(months) && months > 0) {
+                      return formatCurrency(total / months);
+                    }
+                    return formatCurrency(0);
+                  })()}
+                </Text>
+
+                <TextInput
+                  style={[
+                    styles.modalInput,
+                    { color: colors.text, borderColor: colors.icon + "30" },
+                  ]}
+                  placeholder="Description (optionnel)"
+                  value={newCredit.description}
+                  onChangeText={(text) =>
+                    setNewCredit({ ...newCredit, description: text })
+                  }
+                  placeholderTextColor={colors.textLight}
+                />
+
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={() => {
+                    const total = parseFloat(newCredit.totalAmount);
+                    const months = parseInt(newCredit.remainingMonths);
+
+                    if (!newCredit.title) {
+                      Alert.alert("Erreur", "Veuillez entrer un nom");
+                      return;
+                    }
+                    if (isNaN(total) || total <= 0) {
+                      Alert.alert(
+                        "Erreur",
+                        "Veuillez entrer un montant valide",
+                      );
+                      return;
+                    }
+                    if (isNaN(months) || months <= 0) {
+                      Alert.alert(
+                        "Erreur",
+                        "Veuillez entrer un nombre de mois valide",
+                      );
+                      return;
+                    }
+
+                    addCredit({
+                      title: newCredit.title,
+                      totalAmount: total,
+                      remainingMonths: months,
+                      monthlyPayment: total / months,
+                      startDate: new Date().toISOString(),
+                      description: newCredit.description,
+                    });
+
+                    // Reset
+                    setNewCredit({
+                      title: "",
+                      totalAmount: "",
+                      remainingMonths: "12",
+                      monthlyPayment: "",
+                      description: "",
+                    });
+
+                    setShowCreditModal(false);
+                    Alert.alert("Succès", "Crédit ajouté avec succès");
+                  }}
+                >
+                  <Text style={{ color: "white", fontWeight: "600" }}>
+                    Ajouter un crédit
+                  </Text>
                 </TouchableOpacity>
 
                 {/* Liste des crédits existants */}
                 <Text
+                  style={[
+                    styles.modalLabel,
+                    { color: colors.text, marginTop: 16 },
+                  ]}
+                >
+                  Mes crédits en cours
+                </Text>
+
+                {credits.length === 0 ? (
+                  <Text
+                    style={[
+                      styles.loadingText,
+                      {
+                        color: colors.textLight,
+                        textAlign: "center",
+                        padding: 20,
+                      },
+                    ]}
+                  >
+                    Aucun crédit pour le moment
+                  </Text>
+                ) : (
+                  credits.map((credit) => {
+                    const remaining = credit.totalAmount - credit.paidAmount;
+                    const progress =
+                      (credit.paidAmount / credit.totalAmount) * 100;
+                    return (
+                      <View key={credit.id} style={styles.creditItem}>
+                        <View style={styles.creditHeader}>
+                          <Text
+                            style={[styles.creditTitle, { color: colors.text }]}
+                          >
+                            {credit.title}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => deleteCredit(credit.id)}
+                          >
+                            <Ionicons
+                              name="trash-outline"
+                              size={18}
+                              color={colors.danger}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <Text
+                          style={[
+                            styles.creditDescription,
+                            { color: colors.textLight },
+                          ]}
+                        >
+                          {credit.description || "Achat à amortir"}
+                        </Text>
+                        <View style={styles.creditProgressContainer}>
+                          <View style={styles.creditProgressBar}>
+                            <View
+                              style={[
+                                styles.creditProgressFill,
+                                {
+                                  width: `${progress}%`,
+                                  backgroundColor: colors.primary,
+                                },
+                              ]}
+                            />
+                          </View>
+                          <Text
+                            style={[
+                              styles.creditProgressText,
+                              { color: colors.textLight },
+                            ]}
+                          >
+                            {progress.toFixed(0)}%
+                          </Text>
+                        </View>
+                        <View style={styles.creditDetails}>
+                          <Text
+                            style={[
+                              styles.creditAmount,
+                              { color: colors.text },
+                            ]}
+                          >
+                            Reste: {formatCurrency(remaining)}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.creditMonthly,
+                              { color: colors.primary },
+                            ]}
+                          >
+                            {formatCurrency(credit.monthlyPayment)}/mois
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })
+                )}
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Liste des crédits existants */}
+        {/* <Text
                   style={[
                     styles.modalLabel,
                     { color: colors.text, marginTop: 16 },
@@ -644,7 +1435,7 @@ export default function HomeScreen() {
               </ScrollView>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
 
         {/* Contributions aux projets */}
         <IslandCard>
@@ -794,6 +1585,8 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
+    textAlign: "center",
+    padding: 20,
   },
   cardHeader: {
     flexDirection: "row",
