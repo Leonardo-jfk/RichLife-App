@@ -7,23 +7,6 @@ import { Parisienne_400Regular, useFonts } from "@expo-google-fonts/parisienne";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 
-// export default function RootLayout() {
-//   const [loaded] = useFonts({
-//     'FrenchScript': Parisienne_400Regular,
-//     'FrenchScriptBold': Parisienne_700Bold,
-//   });
-
-//   useEffect(() => {
-//     if (loaded) {
-//       SplashScreen.hideAsync();
-//     }
-//   }, [loaded]);
-
-//   if (!loaded) return null;
-
-//   return <Stack />; // Ton contenu habituel
-// }
-
 function TabNavigation() {
   const { colors, theme } = useTheme(); // Récupère les couleurs dynamiques
 
