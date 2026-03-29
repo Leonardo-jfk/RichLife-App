@@ -17,6 +17,7 @@ import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
 import { COLORS } from "../../src/constants/colors";
 import { CURRENCIES, useCurrency } from "../../src/context/CurrencyContext";
+import { useLanguage } from "../../src/context/LanguageContext"; // Vérifie le nombre de ../
 import { useTheme } from "../../src/context/ThemeContext";
 
 export default function SystemView() {
@@ -28,7 +29,7 @@ export default function SystemView() {
   const [searchText, setSearchText] = useState("");
 
   const currentCurrencyInfo = getCurrencyInfo(currency);
-
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const filteredCurrencies = CURRENCIES.filter(
     (c) =>
       c.code.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -226,6 +227,33 @@ export default function SystemView() {
           </TouchableOpacity>
         </IslandCard>
 
+        <TouchableOpacity
+          style={[
+            styles.titleContainer,
+            { backgroundColor: colors.icon + "20" },
+          ]}
+          onPress={() => setShowLanguageModal(true)}
+        >
+          <View style={styles.settingLeft}>
+            <View
+              style={[styles.titleContainer, { backgroundColor: "#8B5CF620" }]}
+            >
+              <Ionicons name="language" size={22} color="#8B5CF6" />
+            </View>
+            <View>
+              <Text style={[styles.settingLabel, { color: colors.text }]}>
+                {t.system.language}{" "}
+                {/* On utilise 'language' au lieu de 'languageLabel' */}
+              </Text>
+
+              <Text style={[styles.infoLabel, { color: colors.textLight }]}>
+                {language.toUpperCase()}
+              </Text>
+            </View>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+        </TouchableOpacity>
+
         {/* Informations */}
         <IslandCard>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
@@ -323,6 +351,66 @@ export default function SystemView() {
         {/* Espace en bas */}
         <View style={{ height: 20 }} />
       </ScrollView>
+
+      {/* Modal de Langue */}
+      <Modal
+        visible={showLanguageModal}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={styles.modalOverlay}>
+          <View
+            style={[
+              styles.modalContainer,
+              { backgroundColor: theme === "dark" ? "#1A1A1A" : "#FFF" },
+            ]}
+          >
+            <View style={styles.modalHeader}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>
+                Choisir la langue
+              </Text>
+              <TouchableOpacity onPress={() => setShowLanguageModal(false)}>
+                <Ionicons name="close" size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            {[
+              { code: "fr", name: "Français", flag: "🇫🇷" },
+              { code: "en", name: "English", flag: "🇬🇧" },
+              { code: "es", name: "Español", flag: "🇪🇸" },
+              { code: "de", name: "Deutsch", flag: "🇩🇪" },
+            ].map((lang) => (
+              <TouchableOpacity
+                key={lang.code}
+                style={[
+                  styles.currencyItem,
+                  language === lang.code && {
+                    backgroundColor: colors.primary + "20",
+                  },
+                ]}
+                onPress={() => {
+                  setLanguage(lang.code as any);
+                  setShowLanguageModal(false);
+                }}
+              >
+                <Text style={{ fontSize: 24, marginRight: 12 }}>
+                  {lang.flag}
+                </Text>
+                <Text style={[styles.currencyName, { color: colors.text }]}>
+                  {lang.name}
+                </Text>
+                {language === lang.code && (
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={20}
+                    color={colors.primary}
+                  />
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
 
       {/* Modal pour sélectionner la devise */}
       <Modal

@@ -7,7 +7,8 @@ const LANGUAGE_STORAGE_KEY = "@finance_app_language";
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => Promise<void>;
-  t: any; // Fonction de traduction
+  //   t: any; // Fonction de traduction
+  t: (typeof translations)["fr"];
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(

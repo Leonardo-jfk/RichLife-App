@@ -4,19 +4,20 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
-  Alert,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    FlatList,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import BackgroundImage from "../../src/components/BackgroundImage";
 import IslandCard from "../../src/components/IslandCard";
 import { useCurrency } from "../../src/context/CurrencyContext"; // ← AJOUTER
+import { useLanguage } from "../../src/context/LanguageContext";
 import { useTheme } from "../../src/context/ThemeContext";
 
 const DREAMS_STORAGE = "@finance_app_dreams";
@@ -342,6 +343,7 @@ export default function ExploreScreen() {
       achieved: false,
     };
   };
+  const { t } = useLanguage();
 
   const renderDream = ({ item }: { item: Dream }) => {
     const category =
@@ -350,8 +352,6 @@ export default function ExploreScreen() {
     const progress = (item.currentAmount / item.targetAmount) * 100;
     const remaining = item.targetAmount - item.currentAmount;
     const projection = calculateProjection(item, true);
-
-    const { t } = useLanguage();
 
     return (
       <IslandCard>
