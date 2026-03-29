@@ -274,6 +274,27 @@ const situationAdvice = {
   },
 };
 
+const AdviceCard = ({ advice, colors }: { advice: any; colors: any }) => (
+  <IslandCard compact style={styles.adviceCardWrapper}>
+    <TouchableOpacity style={styles.adviceCard} onPress={() => {}}>
+      <Ionicons name={advice.icon as any} size={28} color={colors.primary} />
+      <Text style={[styles.adviceTitle, { color: colors.text }]}>
+        {advice.title}
+      </Text>
+      <View style={styles.adviceList}>
+        {advice.advice.slice(0, 3).map((item: string, i: number) => (
+          <Text
+            key={i}
+            style={[styles.adviceText, { color: colors.textLight }]}
+          >
+            • {item}
+          </Text>
+        ))}
+      </View>
+    </TouchableOpacity>
+  </IslandCard>
+);
+
 export default function WisdomView() {
   const { colors } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -322,7 +343,7 @@ export default function WisdomView() {
           </Text>
         </IslandCard>
 
-        {/* Conseils par situation */}
+        {/* Conseils par situation
         <View style={styles.sectionHeader}>
           <Ionicons name="bulb" size={20} color={colors.primary} />
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
@@ -335,30 +356,32 @@ export default function WisdomView() {
           showsHorizontalScrollIndicator={false}
           style={styles.adviceScroll}
         >
-          <TouchableOpacity
-            style={[
-              styles.adviceCard,
-              { backgroundColor: colors.primary + "10" },
-            ]}
-            onPress={() => {}}
-          >
-            <Ionicons
-              name={situationAdvice.lowIncome.icon as any}
-              size={24}
-              color={colors.primary}
-            />
-            <Text style={[styles.adviceTitle, { color: colors.text }]}>
-              {situationAdvice.lowIncome.title}
-            </Text>
-            {situationAdvice.lowIncome.advice.slice(0, 3).map((item, i) => (
-              <Text
-                key={i}
-                style={[styles.adviceText, { color: colors.textLight }]}
-              >
-                • {item}
+          <IslandCard>
+            <TouchableOpacity
+              style={[
+                styles.adviceCard,
+                { backgroundColor: colors.primary + "10" },
+              ]}
+              onPress={() => {}}
+            >
+              <Ionicons
+                name={situationAdvice.lowIncome.icon as any}
+                size={24}
+                color={colors.primary}
+              />
+              <Text style={[styles.adviceTitle, { color: colors.text }]}>
+                {situationAdvice.lowIncome.title}
               </Text>
-            ))}
-          </TouchableOpacity>
+              {situationAdvice.lowIncome.advice.slice(0, 3).map((item, i) => (
+                <Text
+                  key={i}
+                  style={[styles.adviceText, { color: colors.textLight }]}
+                >
+                  • {item}
+                </Text>
+              ))}
+            </TouchableOpacity>
+          </IslandCard>
 
           <TouchableOpacity
             style={[
@@ -434,6 +457,26 @@ export default function WisdomView() {
               </Text>
             ))}
           </TouchableOpacity>
+        </ScrollView> */}
+
+        {/* Conseils par situation */}
+        <View style={styles.sectionHeader}>
+          <Ionicons name="bulb" size={20} color={colors.primary} />
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Conseils par situation
+          </Text>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.adviceScroll}
+          contentContainerStyle={styles.adviceScrollContent}
+        >
+          <AdviceCard advice={situationAdvice.lowIncome} colors={colors} />
+          <AdviceCard advice={situationAdvice.highIncome} colors={colors} />
+          <AdviceCard advice={situationAdvice.investment} colors={colors} />
+          <AdviceCard advice={situationAdvice.mindset} colors={colors} />
         </ScrollView>
 
         {/* Catégories */}
@@ -456,12 +499,15 @@ export default function WisdomView() {
               <Ionicons
                 name={cat.icon as any}
                 size={16}
-                color={selectedCategory === cat.id ? "#fff" : colors.text}
+                color={selectedCategory === cat.id ? "#000000ff" : colors.text}
               />
               <Text
                 style={[
                   styles.categoryChipText,
-                  { color: selectedCategory === cat.id ? "#fff" : colors.text },
+                  {
+                    color:
+                      selectedCategory === cat.id ? "#000000ff" : colors.text,
+                  },
                 ]}
               >
                 {cat.name}
@@ -471,7 +517,7 @@ export default function WisdomView() {
         </ScrollView>
 
         {/* Tags */}
-        <IslandCard>
+        <IslandCard paddingBottom={1}>
           <View style={styles.tagsContainer}>
             {TAGS.map((tag) => (
               <TouchableOpacity
@@ -636,5 +682,17 @@ const styles = StyleSheet.create({
   tagsCard: {
     paddingVertical: 1, // ← Réduit l'espace interne haut/bas
     paddingHorizontal: 12, // ← Peut aussi réduire l'espace latéral
+  },
+
+  adviceScrollContent: {
+    paddingHorizontal: 16,
+  },
+  adviceCardWrapper: {
+    marginRight: 12,
+    width: 280,
+  },
+
+  adviceList: {
+    gap: 6,
   },
 });
