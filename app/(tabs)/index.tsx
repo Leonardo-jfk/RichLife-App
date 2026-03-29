@@ -280,7 +280,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
@@ -301,6 +301,7 @@ import { useDailyBudget } from "../../src/hooks/useDailyBudget";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
 import { loadTransactions, saveTransactions } from "../../src/utils/storage";
+// import { useNavigation } from "expo-router";
 
 interface Transaction {
   id: string;
@@ -312,6 +313,7 @@ interface Transaction {
 }
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
   const router = useRouter();
   const { colors, isLoading, theme } = useTheme();
   const [forceUpdate, setForceUpdate] = useState(0);
@@ -1487,7 +1489,13 @@ export default function HomeScreen() {
 
           <TouchableOpacity
             style={styles.projectRow}
-            onPress={() => router.push("/(tabs)/goalView?tab=dreams")}
+            // onPress={() => router.push("/(tabs)/goalView?tab=dreams")}
+            onPress={() =>
+              router.push({
+                pathname: "/goalView",
+                params: { tab: "dreams" },
+              })
+            }
           >
             <View style={styles.projectHeader}>
               <Ionicons name="heart" size={20} color="#EC4899" />
@@ -1516,7 +1524,13 @@ export default function HomeScreen() {
 
           <TouchableOpacity
             style={styles.projectRow}
-            onPress={() => router.push("/(tabs)/goalView?tab=goals")}
+            // onPress={() => router.push("/(tabs)/goalView?tab=goals")}
+            // onPress={() => router.push("/goalView?tab=dreams")}
+            onPress={() => navigation.navigate("goalView", { tab: "dreams" })}
+            //           onPress={() => router.push({
+            // pathname: "/goalView",
+            // params: { tab: "goals" }
+            // })}
           >
             <View style={styles.projectHeader}>
               <Ionicons name="flag" size={20} color="#8B5CF6" />

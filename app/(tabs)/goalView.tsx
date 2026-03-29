@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
@@ -81,11 +82,16 @@ interface Goal {
 }
 
 export default function ExploreScreen() {
+  const params = useLocalSearchParams();
+  const initialTab = (params.tab as string) || "dreams";
+
+  const [activeTab, setActiveTab] = useState(initialTab);
+
   const themeContext = useTheme();
   const colors = themeContext.colors as any;
   const { formatCurrency, currency } = useCurrency();
   colors.textLight = colors.textLight ?? colors.textDark ?? colors.text;
-  const [activeTab, setActiveTab] = useState("dreams");
+  // const [activeTab, setActiveTab] = useState("dreams");
   const [dreams, setDreams] = useState<Dream[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
   const [showAddDream, setShowAddDream] = useState(false);
