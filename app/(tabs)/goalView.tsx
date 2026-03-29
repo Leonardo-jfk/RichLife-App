@@ -351,6 +351,8 @@ export default function ExploreScreen() {
     const remaining = item.targetAmount - item.currentAmount;
     const projection = calculateProjection(item, true);
 
+    const { t } = useLanguage();
+
     return (
       <IslandCard>
         <View style={styles.cardHeader}>
@@ -370,6 +372,7 @@ export default function ExploreScreen() {
             <Text style={[styles.dreamName, { color: colors.text }]}>
               {item.name}
             </Text>
+            <Text>{t.home.dailyBudget}</Text>
             <Text style={[styles.categoryText, { color: colors.textLight }]}>
               {category.name}
             </Text>

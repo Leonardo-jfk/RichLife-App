@@ -62,6 +62,15 @@ export default function SystemView() {
     );
   };
 
+  const { language, setLanguage, t } = useLanguage();
+
+  const LANGUAGES = [
+    { code: "fr", name: "Français", flag: "🇫🇷" },
+    { code: "en", name: "English", flag: "🇬🇧" },
+    { code: "es", name: "Español", flag: "🇪🇸" },
+    { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  ];
+
   if (isLoading) {
     return (
       <BackgroundImage imageTheme="system" opacity={0.9} blurRadius={2}>
@@ -123,6 +132,26 @@ export default function SystemView() {
               <Ionicons name="chevron-forward" size={18} color={colors.icon} />
             </View>
           </TouchableOpacity>
+        </IslandCard>
+
+        <IslandCard>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            {t.system.language}
+          </Text>
+          {LANGUAGES.map((lang) => (
+            <TouchableOpacity
+              key={lang.code}
+              style={styles.settingRow}
+              onPress={() => setLanguage(lang.code as any)}
+            >
+              <Text style={{ color: colors.text }}>
+                {lang.flag} {lang.name}
+              </Text>
+              {language === lang.code && (
+                <Ionicons name="checkmark" size={20} color={colors.primary} />
+              )}
+            </TouchableOpacity>
+          ))}
         </IslandCard>
 
         {/* Préférences */}
