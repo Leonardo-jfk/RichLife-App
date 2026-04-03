@@ -513,7 +513,7 @@ export default function TransactionsScreen() {
   const router = useRouter();
   const { formatCurrency } = useCurrency();
   const { t } = useLanguage();
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -603,12 +603,13 @@ export default function TransactionsScreen() {
   };
 
   const sections = getSections();
+const buttonTextColor = theme === "dark" ? "#000000" : "#FFFFFF";
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
+        <Text style={[styles.headerTitle, { color: colors.textLight }]}>
           {t.transactions.title}
         </Text>
         <TouchableOpacity
@@ -624,7 +625,7 @@ export default function TransactionsScreen() {
       {viewMode === "month" ? (
         <>
           {/* Navigation mois */}
-          <View style={[styles.monthNavigator, { backgroundColor: colors.text }]}>
+          <View style={[styles.monthNavigator, { backgroundColor: colors.background }]}>
             <TouchableOpacity onPress={() => changeMonth(-1)}>
               <Ionicons name="chevron-back" size={24} color={colors.text} />
             </TouchableOpacity>
@@ -637,7 +638,7 @@ export default function TransactionsScreen() {
           </View>
 
           {/* Résumé du mois */}
-          <View style={[styles.monthSummary, { backgroundColor: colors.text }]}>
+          <View style={[styles.monthSummary, { backgroundColor: colors.background }]}>
             <View style={styles.summaryRow}>
               <View style={styles.summaryItem}>
                 <Text style={[styles.summaryLabel, { color: colors.textLight }]}>
@@ -657,7 +658,7 @@ export default function TransactionsScreen() {
               </View>
             </View>
             <View style={styles.totalRow}>
-              <Text style={[styles.totalLabel, { color: colors.textLight }]}>
+              <Text style={[styles.totalLabel, { color: colors.text }]}>
                 {t.transactions.monthlyBalance}
               </Text>
               <Text
@@ -702,7 +703,7 @@ export default function TransactionsScreen() {
                   style={[styles.addButton, { backgroundColor: colors.primary }]}
                   onPress={() => router.push("/add-transaction")}
                 >
-                  <Text style={styles.addButtonText}>
+                  <Text style={[styles.addButtonText, { color: buttonTextColor }]}>
                     {t.transactions.addTransaction}
                   </Text>
                 </TouchableOpacity>
@@ -713,8 +714,8 @@ export default function TransactionsScreen() {
       ) : (
         <>
           {/* Solde total (vue toutes transactions) */}
-          <View style={[styles.totalContainer, { backgroundColor: colors.text }]}>
-            <Text style={[styles.totalLabel, { color: colors.textLight }]}>
+          <View style={[styles.totalContainer, { backgroundColor: colors.background }]}>
+            <Text style={[styles.addButtonText, { color: buttonTextColor }]}>
               {t.transactions.totalBalance}
             </Text>
             <Text
@@ -767,14 +768,16 @@ export default function TransactionsScreen() {
                   size={60}
                   color={colors.textLight}
                 />
-                <Text style={[styles.emptyText, { color: colors.textLight }]}>
+                <Text style={[styles.addButtonText, { color: buttonTextColor }]}>
                   {t.transactions.noTransactions}
                 </Text>
                 <TouchableOpacity
                   style={[styles.addButton, { backgroundColor: colors.primary }]}
                   onPress={() => router.push("/add-transaction")}
                 >
-                  <Text style={styles.addButtonText}>
+                  {/*<Text style={styles.addButtonText}>*/}
+                      <Text style={[styles.addButtonText, { color: buttonTextColor }]}>
+
                     {t.transactions.addTransaction}
                   </Text>
                 </TouchableOpacity>
@@ -789,7 +792,7 @@ export default function TransactionsScreen() {
         style={[styles.fab, { backgroundColor: colors.primary }]}
         onPress={() => router.push("/add-transaction")}
       >
-        <Ionicons name="add" size={30} color="white" />
+        <Ionicons name="add" size={30} color={buttonTextColor } />
       </TouchableOpacity>
     </View>
   );
@@ -917,7 +920,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   addButtonText: {
-    color: "white",
+    // color: theme == "dark":  "white" ?? "black",
     fontSize: 14,
     fontWeight: "500",
   },
