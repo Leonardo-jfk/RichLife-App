@@ -1,9 +1,7 @@
-a, b = 10, 7
-c = a + 10 - 5 * b + 4
-d = 3 * a + 1 - b // 4 + a % 2
-e = 2 * a + b - 1 + a ** 2
-f = a + b // a - b
-print(c, d, e, f)
+a = int(input('a: '))
+b = int(input('b: '))
+c = int(input('c: '))
+d = int(input('d: '))
 
-
-print(16 % 2)
+m = max(min(a, b), min(c, d))
+print('Resultado: ', m)
