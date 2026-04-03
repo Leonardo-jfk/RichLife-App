@@ -1,14 +1,81 @@
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import React, { createContext, useContext, useEffect, useState } from "react";
+// import { Language, translations } from "../constants/translations";
+//
+// const LANGUAGE_STORAGE_KEY = "@finance_app_language";
+//
+// interface LanguageContextType {
+//   language: Language;
+//   setLanguage: (lang: Language) => Promise<void>;
+//   //   t: any; // Fonction de traduction
+//   t: (typeof translations)["fr"];
+// }
+//
+// const LanguageContext = createContext<LanguageContextType | undefined>(
+//   undefined,
+// );
+//
+// export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
+//   children,
+// }) => {
+//   const [language, setLangState] = useState<Language>("fr");
+//
+//   useEffect(() => {
+//     loadLanguage();
+//   }, []);
+//
+//   const loadLanguage = async () => {
+//     const saved = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
+//     if (saved) setLangState(saved as Language);
+//   };
+//
+//   const setLanguage = async (lang: Language) => {
+//     setLangState(lang);
+//     await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+//   };
+//
+//   // Helper pour accéder aux traductions (ex: t.home.title)
+//   const t = translations[language];
+//
+//   return (
+//     <LanguageContext.Provider value={{ language, setLanguage, t }}>
+//       {children}
+//     </LanguageContext.Provider>
+//   );
+// };
+//
+// export const useLanguage = () => {
+//   const context = useContext(LanguageContext);
+//   if (!context)
+//     throw new Error("useLanguage must be used within LanguageProvider");
+//   return context;
+// };
+
+
+
+
+
+// src/context/LanguageContext.tsx
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Language, translations } from "../constants/translations";
 
 const LANGUAGE_STORAGE_KEY = "@finance_app_language";
 
+// Liste des langues disponibles
+export const AVAILABLE_LANGUAGES: { code: Language; name: string; flag: string }[] = [
+  { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "en", name: "English", flag: "🇺🇸" },
+  { code: "es", name: "Español", flag: "🇪🇸" },
+  { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  { code: "ru", name: "Русский", flag: "🇷🇺" },
+];
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => Promise<void>;
-  //   t: any; // Fonction de traduction
-  t: (typeof translations)["fr"];
+  t: typeof translations.fr;
+  availableLanguages: typeof AVAILABLE_LANGUAGES;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(
@@ -26,7 +93,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const loadLanguage = async () => {
     const saved = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
-    if (saved) setLangState(saved as Language);
+    if (saved && ["fr", "en", "es", "de", "ru"].includes(saved)) {
+      setLangState(saved as Language);
+    }
   };
 
   const setLanguage = async (lang: Language) => {
@@ -34,11 +103,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
     await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
   };
 
-  // Helper pour accéder aux traductions (ex: t.home.title)
   const t = translations[language];
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider
+      value={{ language, setLanguage, t, availableLanguages: AVAILABLE_LANGUAGES }}
+    >
       {children}
     </LanguageContext.Provider>
   );

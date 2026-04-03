@@ -20,6 +20,9 @@ import { CURRENCIES, useCurrency } from "../../src/context/CurrencyContext";
 import { useLanguage } from "../../src/context/LanguageContext"; // Vérifie le nombre de ../
 import { useTheme } from "../../src/context/ThemeContext";
 
+import { useLanguage, AVAILABLE_LANGUAGES } from "../../src/context/LanguageContext";
+
+
 export default function SystemView() {
   const { theme, colors, isLoading, toggleTheme } = useTheme();
   const { currency, setCurrency, getCurrencyInfo } = useCurrency();
@@ -65,12 +68,13 @@ export default function SystemView() {
 
   const { language, setLanguage, t } = useLanguage();
 
-  const LANGUAGES = [
-    { code: "fr", name: "Français", flag: "🇫🇷" },
-    { code: "en", name: "English", flag: "🇬🇧" },
-    { code: "es", name: "Español", flag: "🇪🇸" },
-    { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  ];
+  // const LANGUAGES = [
+  //   { code: "fr", name: "Français", flag: "🇫🇷" },
+  //   { code: "en", name: "English", flag: "🇬🇧" },
+  //   { code: "es", name: "Español", flag: "🇪🇸" },
+  //   { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  // ];
+  const LANGUAGES = AVAILABLE_LANGUAGES;
 
   if (isLoading) {
     return (
