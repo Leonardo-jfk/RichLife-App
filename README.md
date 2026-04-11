@@ -128,17 +128,18 @@ During this project, I picked up important skills and gained a deeper understand
 
 ## 🚀 How Can It Be Improved?
 
-- Add **push notifications** for daily budget reminders and goal milestones
+- Add Google/Apple login
+- Add data export/import
+- Add offline mode with automatic synchronization
+- Add data sharing between family members
 - Implement **data export** (CSV/PDF) for transactions and goals
 - Add **recurring transactions** for monthly bills and subscriptions
 - Create **charts and graphs** for visualizing spending patterns
-- Add **budget categories** with spending limits and alerts
 - Implement **cloud sync** to backup user data across devices
 - Create a **widget** for home screen showing daily budget
 - Add **Apple Watch / Wear OS** companion app for quick expense logging
 - Integrate **bank APIs** for automatic transaction import (Plaid, etc.)
 - Add **biometric authentication** for enhanced security
-- Implement **spending insights** with AI-powered recommendations
 - Add **family sharing** for joint budgets and goals
 
 ---
