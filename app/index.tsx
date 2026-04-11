@@ -14,17 +14,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BackgroundImage from "../../src/components/BackgroundImage";
-import IslandCard from "../../src/components/IslandCard";
-import { COLORS } from "../../src/constants/colors";
-import { useCurrency } from "../../src/context/CurrencyContext";
-import { useLanguage } from "../../src/context/LanguageContext";
-import { useTheme } from "../../src/context/ThemeContext";
-import { useDailyBudget } from "../../src/hooks/useDailyBudget";
-import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
-import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
-import { loadTransactions, saveTransactions } from "../../src/utils/storage";
-import { useDailyReminder } from "../../src/hooks/useDailyReminder";
+import BackgroundImage from "../src/components/BackgroundImage";
+import IslandCard from "../src/components/IslandCard";
+import { COLORS } from "../src/constants/colors";
+import { useCurrency } from "../src/context/CurrencyContext";
+import { useLanguage } from "../src/context/LanguageContext";
+import { useTheme } from "../src/context/ThemeContext";
+import { useDailyBudget } from "../src/hooks/useDailyBudget";
+import { useMonthlyStats } from "../src/hooks/useMonthlyStats";
+import { Dream, Goal, STORAGE_KEYS } from "../src/types/finance-types";
+import { loadTransactions, saveTransactions } from "../src/utils/storage";
+import { useDailyReminder } from "../src/hooks/useDailyReminder";
 
 interface Transaction {
   id: string;

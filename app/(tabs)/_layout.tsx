@@ -131,141 +131,141 @@
 //   if (!loaded && !error) {
 //     return null;
 //   }
-
-import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Tabs, Redirect } from "expo-router";
-import { useTheme } from "../../src/context/ThemeContext";
-import { useAuth } from "../../src/context/AuthContext";
-import { ActivityIndicator, View } from "react-native";
-import { useFonts, Parisienne_400Regular } from "@expo-google-fonts/parisienne";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-
-function TabNavigation() {
-  const { colors, theme } = useTheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.icon,
-        tabBarStyle: {
-          backgroundColor: theme === "dark" ? "#000000" : "#FFFFFF",
-          borderTopColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
-          height: 60,
-          paddingBottom: 10,
-        },
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Accueil",
-          tabBarIcon: ({ color, focused }) => (
-            <IconSymbol size={24} name={focused ? "house.fill" : "house"} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="transView"
-        options={{
-          title: "Transactions",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name={"brain"} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="goalView"
-        options={{
-          title: "Objectifs",
-          tabBarIcon: ({ color, focused }) => (
-            <IconSymbol size={24} name={focused ? "star.fill" : "star"} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="wisdomView"
-        options={{
-          title: "Sagesse",
-          tabBarIcon: ({ color, focused }) => (
-            <IconSymbol size={24} name={focused ? "lightbulb.fill" : "lightbulb"} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="systemView"
-        options={{
-          title: "Système",
-          tabBarIcon: ({ color, focused }) => (
-            <IconSymbol size={24} name={focused ? "gearshape.fill" : "gearshape"} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
-}
-
-export default function TabLayout() {
-  const { session, isLoading: authLoading } = useAuth();
-
-  // Chargement de la police Parisienne
-  const [fontsLoaded, fontsError] = useFonts({
-    FrenchScript: Parisienne_400Regular,
-  });
-
-  useEffect(() => {
-    if (fontsLoaded || fontsError) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontsError]);
-
-  // Attendre le chargement de la police ET de l'auth
-  if (!fontsLoaded && !fontsError) {
-    return null;
-  }
-
-  if (authLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  if (!session) {
-    return <Redirect href="/login" />;
-  }
-
-  return <TabNavigation />;
-}
-
-
-  return (
-    // <ThemeProvider>
-    //   <TabNavigation />
-    // </ThemeProvider>
-      <ThemeProvider>
-      <LanguageProvider>
-        <CurrencyProvider>
-          <AuthProvider>
-            <SyncProvider>
-              <TabNavigation />
-            </SyncProvider>
-          </AuthProvider>
-        </CurrencyProvider>
-      </LanguageProvider>
-    </ThemeProvider>
-  );
-}
-
+//
+// import { HapticTab } from "@/components/haptic-tab";
+// import { IconSymbol } from "@/components/ui/icon-symbol";
+// import { Tabs, Redirect } from "expo-router";
+// import { useTheme } from "../../src/context/ThemeContext";
+// import { useAuth } from "../../src/context/AuthContext";
+// import { ActivityIndicator, View } from "react-native";
+// import { useFonts, Parisienne_400Regular } from "@expo-google-fonts/parisienne";
+// import * as SplashScreen from "expo-splash-screen";
+// import { useEffect } from "react";
+//
+// function TabNavigation() {
+//   const { colors, theme } = useTheme();
+//
+//   return (
+//     <Tabs
+//       screenOptions={{
+//         tabBarActiveTintColor: colors.primary,
+//         tabBarInactiveTintColor: colors.icon,
+//         tabBarStyle: {
+//           backgroundColor: theme === "dark" ? "#000000" : "#FFFFFF",
+//           borderTopColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+//           height: 60,
+//           paddingBottom: 10,
+//         },
+//         headerShown: false,
+//         tabBarButton: HapticTab,
+//       }}
+//     >
+//       <Tabs.Screen
+//         name="index"
+//         options={{
+//           title: "Accueil",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol size={24} name={focused ? "house.fill" : "house"} color={color} />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="transView"
+//         options={{
+//           title: "Transactions",
+//           tabBarIcon: ({ color }) => (
+//             <IconSymbol size={24} name={"brain"} color={color} />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="goalView"
+//         options={{
+//           title: "Objectifs",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol size={24} name={focused ? "star.fill" : "star"} color={color} />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="wisdomView"
+//         options={{
+//           title: "Sagesse",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol size={24} name={focused ? "lightbulb.fill" : "lightbulb"} color={color} />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="systemView"
+//         options={{
+//           title: "Système",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol size={24} name={focused ? "gearshape.fill" : "gearshape"} color={color} />
+//           ),
+//         }}
+//       />
+//     </Tabs>
+//   );
+// }
+//
+// export default function TabLayout() {
+//   const { session, isLoading: authLoading } = useAuth();
+//
+//   // Chargement de la police Parisienne
+//   const [fontsLoaded, fontsError] = useFonts({
+//     FrenchScript: Parisienne_400Regular,
+//   });
+//
+//   useEffect(() => {
+//     if (fontsLoaded || fontsError) {
+//       SplashScreen.hideAsync();
+//     }
+//   }, [fontsLoaded, fontsError]);
+//
+//   // Attendre le chargement de la police ET de l'auth
+//   if (!fontsLoaded && !fontsError) {
+//     return null;
+//   }
+//
+//   if (authLoading) {
+//     return (
+//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//         <ActivityIndicator size="large" />
+//       </View>
+//     );
+//   }
+//
+//   if (!session) {
+//     return <Redirect href="/login" />;
+//   }
+//
+//   return <TabNavigation />;
+// }
+//
+//
+//   return (
+//     // <ThemeProvider>
+//     //   <TabNavigation />
+//     // </ThemeProvider>
+//       <ThemeProvider>
+//       <LanguageProvider>
+//         <CurrencyProvider>
+//           <AuthProvider>
+//             <SyncProvider>
+//               <TabNavigation />
+//             </SyncProvider>
+//           </AuthProvider>
+//         </CurrencyProvider>
+//       </LanguageProvider>
+//     </ThemeProvider>
+//   );
+// }
+//
 
 
 

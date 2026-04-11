@@ -482,16 +482,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import TransactionCard from "../../src/components/TransactionCard";
-import { COLORS } from "../../src/constants/colors";
-import { useCurrency } from "../../src/context/CurrencyContext";
-import { useLanguage } from "../../src/context/LanguageContext";
-import { useTheme } from "../../src/context/ThemeContext";
+import TransactionCard from "../src/components/TransactionCard";
+import { COLORS } from "../src/constants/colors";
+import { useCurrency } from "../src/context/CurrencyContext";
+import { useLanguage } from "../src/context/LanguageContext";
+import { useTheme } from "../src/context/ThemeContext";
 import {
   calculateTotals,
   filterTransactionsByMonth,
-} from "../../src/utils/calculations";
-import { loadTransactions, saveTransactions } from "../../src/utils/storage";
+} from "../src/utils/calculations";
+import { loadTransactions, saveTransactions } from "../src/utils/storage";
 
 // Interface pour les transactions
 interface Transaction {
