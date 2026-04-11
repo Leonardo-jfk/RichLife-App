@@ -1384,6 +1384,7 @@ import { COLORS } from "../../src/constants/colors";
 import { CURRENCIES, useCurrency } from "../../src/context/CurrencyContext";
 import { useLanguage, AVAILABLE_LANGUAGES } from "../../src/context/LanguageContext";
 import { useTheme } from "../../src/context/ThemeContext";
+import { useDailyReminder } from "../../src/hooks/useDailyReminder";
 
 export default function SystemView() {
   const { theme, colors, isLoading, toggleTheme } = useTheme();
@@ -1401,6 +1402,38 @@ export default function SystemView() {
       c.code.toLowerCase().includes(searchText.toLowerCase()) ||
       c.name.toLowerCase().includes(searchText.toLowerCase()),
   );
+
+
+
+  const {
+  areNotificationsEnabled,
+  setNotificationsEnabled,
+  sendReminder,
+} = useDailyReminder(monthlyIncome, monthlyExpenses, dreams, goals);
+
+const [notifications, setNotifications] = useState(false);
+
+// Charger l'état au montage
+useEffect(() => {
+  const loadNotificationPref = async () => {
+    const enabled = await areNotificationsEnabled();
+    setNotifications(enabled);
+  };
+  loadNotificationPref();
+}, []);
+
+// Quand l'utilisateur change le switch
+const handleToggleNotifications = async (value: boolean) => {
+  setNotifications(value);
+  await setNotificationsEnabled(value);
+  if (value) {
+    Alert.alert("✅", "Notifications activées ! Vous recevrez un rappel chaque jour à 19h.");
+    // Envoyer une notification de test immédiate
+    await sendReminder();
+  } else {
+    Alert.alert("🔕", "Notifications désactivées.");
+  }
+};
 
   const clearAllData = () => {
     Alert.alert(
@@ -1544,7 +1577,7 @@ export default function SystemView() {
             </View>
             <Switch
               value={notifications}
-              onValueChange={setNotifications}
+              onValueChange={handleToggleNotifications}
               trackColor={{ false: "#767577", true: colors.primary }}
               thumbColor={notifications ? "#fff" : "#f4f3f4"}
             />
