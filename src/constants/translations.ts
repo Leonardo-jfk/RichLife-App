@@ -969,7 +969,7 @@ export const translations = {
       mindsetAdvice1: "Whether you believe you can or not, you're right",
       mindsetAdvice2: "Later equals never - agis maintenant",
       mindsetAdvice3: "Contrôle ton esprit et tes émotions",
-      mindsetAdvice4: "Keep track of your achievements",
+      mindsetAdvice4: "Saisis tes accomplissements",
       mindsetAdvice5: "La douleur + réflexion = progrès",
 
       // Citations
@@ -977,12 +977,12 @@ export const translations = {
       quote2: "Le minimalisme n'est pas de ne rien posséder, c'est de ne rien posséder qui vous possède.",
       quote3: "L'argent ne fait pas le bonheur. Je suis maintenant aussi heureux avec 50 millions qu'avec 48 millions.",
       quote4: "Le meilleur investissement que vous puissiez faire est de miser sur vous-même.",
-      quote5: "Skills make you rich, not money. Le vrai capital, c'est ce que vous savez faire.",
-      quote6: "Keep track of your achievements. This week, this month, quarter, year.",
-      quote7: "Always Sell Your Worst Stock First. Coupez vos pertes, laissez courir vos gains.",
-      quote8: "Whether you believe you can do a thing or not, you are right.",
-      quote9: "Later equals never. Si ce n'est pas maintenant, ce ne sera jamais.",
-      quote10: "A man who controls his stomach, penis and tongue has solved 99% of life's problems.",
+      quote5: "Les compétences vous rendent riche, pas l'argent. Le vrai capital, c'est ce que vous savez faire.",
+      quote6: "Suivez vos accomplissements. Cette semaine, ce mois-ci, ce trimestre, cette année.",
+      quote7: "Vendez toujours votre plus mauvaise action en premier.  Coupez vos pertes, laissez courir vos gains.",
+      quote8: "Que vous croyiez pouvoir faire une chose ou non, vous avez raison.",
+      quote9: "Plus tard égale jamais.  Si ce n'est pas maintenant, ce ne sera jamais.",
+      quote10: "Un homme qui contrôle son estomac, son sexe et sa langue a résolu 99% des problèmes de la vie.",
       quote11: "Le secret pour être riche ? Arrêtez d'essayer d'être riche et devenez compétent.",
       quote12: "La douleur + la réflexion = progrès. Acceptez la douleur comme un signal de croissance.",
 

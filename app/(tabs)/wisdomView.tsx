@@ -604,8 +604,8 @@ export default function WisdomView() {
   return (
     <BackgroundImage
       imageTheme="wisdom"
-      opacity={0.9}
-      blurRadius={2}
+      opacity={0.7}
+      blurRadius={6}
       overlayColor="#000000"
       overlayOpacity={0.4}
     >
