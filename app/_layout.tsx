@@ -152,7 +152,7 @@ function TabNavigation() {
       </View>
     );
   }
-
+  // kk
   // if (!session) {
   //   return <Redirect href="/login" />;
   // }
