@@ -1261,9 +1261,16 @@ export default function HomeScreen() {
     }
   };
 
+//   useCallback(() => {
+//     loadAllData();
+//     // Vérifie si une notification doit être envoyée (1x par jour)
+//   }, [])
+// );
+
+useFocusEffect(
   useCallback(() => {
     loadAllData();
-    // Vérifie si une notification doit être envoyée (1x par jour)
+    sendReminder();
   }, [])
 );
 
@@ -1328,7 +1335,7 @@ export default function HomeScreen() {
     setShowIncomeModal(false);
   };
 
-  // const { sendReminder } = useDailyReminder(monthlyIncome, monthlyExpenses, dreams, goals);
+  const { sendReminder } = useDailyReminder();
 
 
   // Mettre à jour forceUpdate quand le thème change
