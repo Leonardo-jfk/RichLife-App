@@ -906,6 +906,127 @@ const responseListener = useRef<Notifications.Subscription | null>(null);
     });
   };
 
+  // Ajoutez ces constantes en haut du fichier
+const WEEKLY_SUMMARY_ENABLED = "@weekly_summary_enabled";
+const WEEKLY_SUMMARY_DAY = "@weekly_summary_day"; // 0 = dimanche, 1 = lundi, ..., 6 = samedi
+const WEEKLY_SUMMARY_HOUR = "@weekly_summary_hour";
+const WEEKLY_SUMMARY_MINUTE = "@weekly_summary_minute";
+
+// Ajoutez ces fonctions dans le hook
+const getWeeklySummaryEnabled = async (): Promise<boolean> => {
+  try {
+    const enabled = await AsyncStorage.getItem(WEEKLY_SUMMARY_ENABLED);
+    return enabled === "true";
+  } catch {
+    return false;
+  }
+};
+
+const setWeeklySummaryEnabled = async (enabled: boolean) => {
+  await AsyncStorage.setItem(WEEKLY_SUMMARY_ENABLED, enabled.toString());
+  if (enabled) {
+    await scheduleWeeklySummary();
+  } else {
+    await cancelWeeklySummary();
+  }
+};
+
+const getWeeklySummarySchedule = async (): Promise<{ day: number; hour: number; minute: number }> => {
+  const day = parseInt(await AsyncStorage.getItem(WEEKLY_SUMMARY_DAY) || "6"); // samedi par défaut
+  const hour = parseInt(await AsyncStorage.getItem(WEEKLY_SUMMARY_HOUR) || "9");
+  const minute = parseInt(await AsyncStorage.getItem(WEEKLY_SUMMARY_MINUTE) || "0");
+  return { day, hour, minute };
+};
+
+const setWeeklySummarySchedule = async (day: number, hour: number, minute: number) => {
+  await AsyncStorage.setItem(WEEKLY_SUMMARY_DAY, day.toString());
+  await AsyncStorage.setItem(WEEKLY_SUMMARY_HOUR, hour.toString());
+  await AsyncStorage.setItem(WEEKLY_SUMMARY_MINUTE, minute.toString());
+  const enabled = await getWeeklySummaryEnabled();
+  if (enabled) {
+    await scheduleWeeklySummary();
+  }
+};
+
+const scheduleWeeklySummary = async () => {
+  await cancelWeeklySummary();
+
+  const { day, hour, minute } = await getWeeklySummarySchedule();
+  const enabled = await getWeeklySummaryEnabled();
+  if (!enabled) return;
+
+  // Planifier la notification hebdomadaire
+  const trigger: Notifications.CalendarTriggerInput = {
+    type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
+    weekday: day + 1, // CalendarTriggerInput utilise 1-7 (dimanche=1)
+    hour,
+    minute,
+    repeats: true,
+  };
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "📊 Résumé hebdomadaire",
+      body: "Votre rapport financier de la semaine est prêt ! Ouvrez l'application pour le consulter.",
+      sound: "default",
+      priority: Notifications.AndroidNotificationPriority.HIGH,
+      data: { screen: "home" },
+    },
+    trigger,
+  });
+};
+
+const cancelWeeklySummary = async () => {
+  // Note: Il faudrait idéalement annuler seulement la notification spécifique
+  // Pour simplifier, on recrée toutes les notifications à chaque changement
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  // Recréer la notification quotidienne si activée
+  const dailyEnabled = await areNotificationsEnabled();
+  if (dailyEnabled) {
+    await scheduleDailyReminder();
+  }
+};
+
+// Envoyer un résumé immédiat (pour tester)
+const sendWeeklySummaryNow = async () => {
+  const budgetData = await computeBudgetData();
+  const transactions = await loadTransactions();
+
+  // Calculer les totaux de la semaine
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  const weekTransactions = transactions.filter((t: any) => {
+    const date = new Date(t.date);
+    return date >= startOfWeek;
+  });
+
+  const weekIncome = weekTransactions
+    .filter((t: any) => t.type === "income")
+    .reduce((sum: number, t: any) => sum + t.amount, 0);
+
+  const weekExpenses = weekTransactions
+    .filter((t: any) => t.type === "expense")
+    .reduce((sum: number, t: any) => sum + t.amount, 0);
+
+  const weekSavings = weekIncome - weekExpenses;
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "📊 Résumé de la semaine",
+      body: `Revenus: ${formatCurrency(weekIncome)} | Dépenses: ${formatCurrency(weekExpenses)} | Économies: ${formatCurrency(weekSavings)}`,
+      sound: "default",
+      priority: Notifications.AndroidNotificationPriority.HIGH,
+      data: { screen: "transView" },
+    },
+    trigger: null,
+  });
+};
+
+
+
   const registerForPushNotifications = async () => {
     if (!Device.isDevice) {
       console.log("⚠️ Les notifications ne fonctionnent que sur un appareil réel");
@@ -957,11 +1078,18 @@ const responseListener = useRef<Notifications.Subscription | null>(null);
     };
   }, []);
 
-  return {
-    registerForPushNotifications,
-    scheduleDailyReminder,
-    sendReminder,
-    areNotificationsEnabled,
-    setNotificationsEnabled,
-  };
+  // Mettez à jour le retour du hook
+return {
+  registerForPushNotifications,
+  scheduleDailyReminder,
+  sendReminder,
+  areNotificationsEnabled,
+  setNotificationsEnabled,
+  // Nouvelles fonctions
+  getWeeklySummaryEnabled,
+  setWeeklySummaryEnabled,
+  getWeeklySummarySchedule,
+  setWeeklySummarySchedule,
+  sendWeeklySummaryNow,
+};
 }

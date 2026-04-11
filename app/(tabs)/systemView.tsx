@@ -23,8 +23,13 @@ import { CURRENCIES, useCurrency } from "../../src/context/CurrencyContext";
 import { useLanguage, AVAILABLE_LANGUAGES } from "../../src/context/LanguageContext";
 import { useTheme } from "../../src/context/ThemeContext";
 import { useDailyReminder } from "../../src/hooks/useDailyReminder";
+import WeeklySummarySettings from "../../src/components/WeeklySummarySettings";
+
+
+
 
 export default function SystemView() {
+
   const { theme, colors, isLoading, toggleTheme } = useTheme();
   const { currency, setCurrency, getCurrencyInfo } = useCurrency();
   const { language, setLanguage, t } = useLanguage();
@@ -41,11 +46,11 @@ export default function SystemView() {
       c.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 
-  const {
-    areNotificationsEnabled,
-    setNotificationsEnabled,
-    sendReminder,
-  } = useDailyReminder();
+  // const {
+  //   areNotificationsEnabled,
+  //   setNotificationsEnabled,
+  //   sendReminder,
+  // } = useDailyReminder();
 
   // FIX: une seule variable d'état pour les notifications
   const [notificationsEnabled, setNotificationsEnabledState] = useState(false);
@@ -95,6 +100,17 @@ export default function SystemView() {
       ],
     );
   };
+
+   const {
+  areNotificationsEnabled,
+  setNotificationsEnabled,
+  sendReminder,
+  getWeeklySummaryEnabled,
+  setWeeklySummaryEnabled,
+  getWeeklySummarySchedule,
+  setWeeklySummarySchedule,
+  sendWeeklySummaryNow,
+} = useDailyReminder();
 
   const LANGUAGES = AVAILABLE_LANGUAGES;
 
@@ -216,7 +232,16 @@ export default function SystemView() {
               trackColor={{ false: "#767577", true: colors.primary }}
               thumbColor={notificationsEnabled ? "#b49b9b" : "#f4f3f4"}
             />
+
           </View>
+
+<WeeklySummarySettings
+  getEnabled={getWeeklySummaryEnabled}
+  setEnabled={setWeeklySummaryEnabled}
+  getSchedule={getWeeklySummarySchedule}
+  setSchedule={setWeeklySummarySchedule}
+  sendTestSummary={sendWeeklySummaryNow}
+/>
 
           {/* FIX: biométrie a son propre handler (setBiometric) */}
           <View
