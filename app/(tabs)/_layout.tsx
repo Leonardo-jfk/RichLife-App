@@ -1,29 +1,158 @@
+// import { HapticTab } from "@/components/haptic-tab";
+// import { IconSymbol } from "@/components/ui/icon-symbol";
+// import { Tabs } from "expo-router";
+// import { ThemeProvider, useTheme } from "../../src/context/ThemeContext"; // Importe useTheme
+//
+// import { Parisienne_400Regular, useFonts } from "@expo-google-fonts/parisienne";
+// import * as SplashScreen from "expo-splash-screen";
+// import React, { useEffect } from "react";
+//
+// import { LanguageProvider } from "../../src/context/LanguageContext";
+// import { CurrencyProvider } from "../../src/context/CurrencyContext";
+// import { AuthProvider } from '../src/context/AuthContext';
+// import { SyncProvider } from '../src/context/SyncContext';
+//
+// function TabNavigation() {
+//   const { colors, theme } = useTheme(); // Récupère les couleurs dynamiques
+//
+//   return (
+//     <Tabs
+//       screenOptions={{
+//         // Utilise les couleurs de ton thème
+//         tabBarActiveTintColor: colors.primary,
+//         tabBarInactiveTintColor: colors.icon,
+//         tabBarStyle: {
+//           // Fond noir si dark, blanc si light
+//           backgroundColor: theme === "dark" ? "#000000" : "#FFFFFF",
+//           borderTopColor:
+//             theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+//           height: 60,
+//           paddingBottom: 10,
+//         },
+//         headerShown: false,
+//         tabBarButton: HapticTab,
+//       }}
+//     >
+//       <Tabs.Screen
+//         name="index"
+//         options={{
+//           title: "Accueil",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol
+//               size={24}
+//               name={focused ? "house.fill" : "house"}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="transView"
+//         options={{
+//           title: "Transactions",
+//           tabBarIcon: ({ color }) => (
+//             <IconSymbol
+//               size={24}
+//               name={"brain"}
+//               color={color}
+//               // type={focused ? "palette" : "monochrome"}
+//             />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="goalView"
+//         options={{
+//           title: "Objectifs",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol
+//               size={24}
+//               name={focused ? "star.fill" : "star"}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="wisdomView"
+//         options={{
+//           title: "Sagesse",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol
+//               size={24}
+//               name={focused ? "lightbulb.fill" : "lightbulb"}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//
+//       <Tabs.Screen
+//         name="systemView"
+//         options={{
+//           title: "Système",
+//           tabBarIcon: ({ color, focused }) => (
+//             <IconSymbol
+//               size={24}
+//               name={focused ? "gearshape.fill" : "gearshape"}
+//               color={color}
+//             />
+//           ),
+//         }}
+//       />
+//     </Tabs>
+//   );
+// }
+//
+// // export default function TabLayout() {
+// //   return (
+// //     <ThemeProvider>
+// //       <TabNavigation />
+// //     </ThemeProvider>
+// //   );
+// // }
+//
+// export default function TabLayout() {
+//   // Chargement des polices manuscrites
+//   const [loaded, error] = useFonts({
+//     FrenchScript: Parisienne_400Regular,
+//   });
+//
+//   useEffect(() => {
+//     if (loaded || error) {
+//      void SplashScreen.hideAsync();
+//     }
+//   }, [loaded, error]);
+//
+//   // Si les polices ne sont pas chargées, on n'affiche rien (ou un écran de chargement)
+//   if (!loaded && !error) {
+//     return null;
+//   }
+
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Tabs } from "expo-router";
-import { ThemeProvider, useTheme } from "../../src/context/ThemeContext"; // Importe useTheme
-
-import { Parisienne_400Regular, useFonts } from "@expo-google-fonts/parisienne";
+import { Tabs, Redirect } from "expo-router";
+import { useTheme } from "../../src/context/ThemeContext";
+import { useAuth } from "../../src/context/AuthContext";
+import { ActivityIndicator, View } from "react-native";
+import { useFonts, Parisienne_400Regular } from "@expo-google-fonts/parisienne";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
-
-import { LanguageProvider } from "../../src/context/LanguageContext";
-import { CurrencyProvider } from "../../src/context/CurrencyContext";
+import { useEffect } from "react";
 
 function TabNavigation() {
-  const { colors, theme } = useTheme(); // Récupère les couleurs dynamiques
+  const { colors, theme } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        // Utilise les couleurs de ton thème
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.icon,
         tabBarStyle: {
-          // Fond noir si dark, blanc si light
           backgroundColor: theme === "dark" ? "#000000" : "#FFFFFF",
-          borderTopColor:
-            theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+          borderTopColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
           height: 60,
           paddingBottom: 10,
         },
@@ -36,11 +165,7 @@ function TabNavigation() {
         options={{
           title: "Accueil",
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={24}
-              name={focused ? "house.fill" : "house"}
-              color={color}
-            />
+            <IconSymbol size={24} name={focused ? "house.fill" : "house"} color={color} />
           ),
         }}
       />
@@ -50,12 +175,7 @@ function TabNavigation() {
         options={{
           title: "Transactions",
           tabBarIcon: ({ color }) => (
-            <IconSymbol
-              size={24}
-              name={"brain"}
-              color={color}
-              // type={focused ? "palette" : "monochrome"}
-            />
+            <IconSymbol size={24} name={"brain"} color={color} />
           ),
         }}
       />
@@ -65,11 +185,7 @@ function TabNavigation() {
         options={{
           title: "Objectifs",
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={24}
-              name={focused ? "star.fill" : "star"}
-              color={color}
-            />
+            <IconSymbol size={24} name={focused ? "star.fill" : "star"} color={color} />
           ),
         }}
       />
@@ -79,11 +195,7 @@ function TabNavigation() {
         options={{
           title: "Sagesse",
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={24}
-              name={focused ? "lightbulb.fill" : "lightbulb"}
-              color={color}
-            />
+            <IconSymbol size={24} name={focused ? "lightbulb.fill" : "lightbulb"} color={color} />
           ),
         }}
       />
@@ -93,11 +205,7 @@ function TabNavigation() {
         options={{
           title: "Système",
           tabBarIcon: ({ color, focused }) => (
-            <IconSymbol
-              size={24}
-              name={focused ? "gearshape.fill" : "gearshape"}
-              color={color}
-            />
+            <IconSymbol size={24} name={focused ? "gearshape.fill" : "gearshape"} color={color} />
           ),
         }}
       />
@@ -105,30 +213,40 @@ function TabNavigation() {
   );
 }
 
-// export default function TabLayout() {
-//   return (
-//     <ThemeProvider>
-//       <TabNavigation />
-//     </ThemeProvider>
-//   );
-// }
-
 export default function TabLayout() {
-  // Chargement des polices manuscrites
-  const [loaded, error] = useFonts({
+  const { session, isLoading: authLoading } = useAuth();
+
+  // Chargement de la police Parisienne
+  const [fontsLoaded, fontsError] = useFonts({
     FrenchScript: Parisienne_400Regular,
   });
 
   useEffect(() => {
-    if (loaded || error) {
-     void SplashScreen.hideAsync();
+    if (fontsLoaded || fontsError) {
+      SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [fontsLoaded, fontsError]);
 
-  // Si les polices ne sont pas chargées, on n'affiche rien (ou un écran de chargement)
-  if (!loaded && !error) {
+  // Attendre le chargement de la police ET de l'auth
+  if (!fontsLoaded && !fontsError) {
     return null;
   }
+
+  if (authLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!session) {
+    return <Redirect href="/login" />;
+  }
+
+  return <TabNavigation />;
+}
+
 
   return (
     // <ThemeProvider>
@@ -137,7 +255,11 @@ export default function TabLayout() {
       <ThemeProvider>
       <LanguageProvider>
         <CurrencyProvider>
-          <TabNavigation />
+          <AuthProvider>
+            <SyncProvider>
+              <TabNavigation />
+            </SyncProvider>
+          </AuthProvider>
         </CurrencyProvider>
       </LanguageProvider>
     </ThemeProvider>
