@@ -1405,30 +1405,60 @@ export default function SystemView() {
 
 
 
-  const {
+//   const {
+//   areNotificationsEnabled,
+//   setNotificationsEnabled,
+//   sendReminder,
+// } = useDailyReminder();
+//
+// const [notificationsEnabled, setNotificationsEnabledStates] = useState(false);
+//
+// // Charger l'état au montage
+// useEffect(() => {
+//   const loadNotificationPref = async () => {
+//     const enabled = await areNotificationsEnabled();
+//     setNotifications(enabled);
+//   };
+//   loadNotificationPref();
+// }, []);
+//
+// // Quand l'utilisateur change le switch
+// const handleToggleNotifications = async (value: boolean) => {
+//   setNotifications(value);
+//   await setNotificationsEnabled(value);
+//   if (value) {
+//     Alert.alert("✅", "Notifications activées ! Vous recevrez un rappel chaque jour à 19h.");
+//     // Envoyer une notification de test immédiate
+//     await sendReminder();
+//   } else {
+//     Alert.alert("🔕", "Notifications désactivées.");
+//   }
+// };
+
+
+const {
   areNotificationsEnabled,
   setNotificationsEnabled,
   sendReminder,
-} = useDailyReminder(monthlyIncome, monthlyExpenses, dreams, goals);
+} = useDailyReminder();
 
-const [notifications, setNotifications] = useState(false);
+const [notificationsEnabled, setNotificationsEnabledState] = useState(false);
 
 // Charger l'état au montage
 useEffect(() => {
   const loadNotificationPref = async () => {
     const enabled = await areNotificationsEnabled();
-    setNotifications(enabled);
+    setNotificationsEnabledState(enabled);
   };
   loadNotificationPref();
 }, []);
 
 // Quand l'utilisateur change le switch
 const handleToggleNotifications = async (value: boolean) => {
-  setNotifications(value);
+  setNotificationsEnabledState(value);
   await setNotificationsEnabled(value);
   if (value) {
     Alert.alert("✅", "Notifications activées ! Vous recevrez un rappel chaque jour à 19h.");
-    // Envoyer une notification de test immédiate
     await sendReminder();
   } else {
     Alert.alert("🔕", "Notifications désactivées.");
@@ -1463,6 +1493,8 @@ const handleToggleNotifications = async (value: boolean) => {
   };
 
   const LANGUAGES = AVAILABLE_LANGUAGES;
+
+
 
   if (isLoading) {
     return (
@@ -1595,12 +1627,18 @@ const handleToggleNotifications = async (value: boolean) => {
                 {t.system.biometrics}
               </Text>
             </View>
+            {/*<Switch*/}
+            {/*  value={biometric}*/}
+            {/*  onValueChange={setBiometric}*/}
+            {/*  trackColor={{ false: "#767577", true: colors.primary }}*/}
+            {/*  thumbColor={biometric ? "#fff" : "#f4f3f4"}*/}
+            {/*/>*/}
             <Switch
-              value={biometric}
-              onValueChange={setBiometric}
-              trackColor={{ false: "#767577", true: colors.primary }}
-              thumbColor={biometric ? "#fff" : "#f4f3f4"}
-            />
+  value={notificationsEnabled}
+  onValueChange={handleToggleNotifications}
+  trackColor={{ false: "#767577", true: colors.primary }}
+  thumbColor={notificationsEnabled ? "#fff" : "#f4f3f4"}
+/>
           </View>
 
           {/* Devise - Bouton qui ouvre le modal */}

@@ -1261,17 +1261,9 @@ export default function HomeScreen() {
     }
   };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     loadAllData();
-  //   }, []),
-  // );
-
-  useFocusEffect(
   useCallback(() => {
     loadAllData();
     // Vérifie si une notification doit être envoyée (1x par jour)
-    // sendReminder();
   }, [])
 );
 
