@@ -1365,7 +1365,7 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Alert,
   FlatList,
@@ -1390,7 +1390,7 @@ export default function SystemView() {
   const { theme, colors, isLoading, toggleTheme } = useTheme();
   const { currency, setCurrency, getCurrencyInfo } = useCurrency();
   const { language, setLanguage, t } = useLanguage();
-  const [notifications, setNotifications] = useState(true);
+  // const [notifications, setNotifications] = useState(true);
   const [biometric, setBiometric] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);

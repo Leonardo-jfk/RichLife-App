@@ -1172,6 +1172,7 @@ import { useDailyBudget } from "../../src/hooks/useDailyBudget";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
 import { Dream, Goal, STORAGE_KEYS } from "../../src/types/finance-types";
 import { loadTransactions, saveTransactions } from "../../src/utils/storage";
+import { useDailyReminder } from "../../src/hooks/useDailyReminder";
 
 interface Transaction {
   id: string;
@@ -1260,11 +1261,19 @@ export default function HomeScreen() {
     }
   };
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     loadAllData();
+  //   }, []),
+  // );
+
   useFocusEffect(
-    useCallback(() => {
-      loadAllData();
-    }, []),
-  );
+  useCallback(() => {
+    loadAllData();
+    // Vérifie si une notification doit être envoyée (1x par jour)
+    // sendReminder();
+  }, [])
+);
 
   // Stats mensuelles des rêves/objectifs
   const stats = useMonthlyStats(dreams, goals, monthlyIncome, monthlyExpenses);
@@ -1326,6 +1335,9 @@ export default function HomeScreen() {
     }
     setShowIncomeModal(false);
   };
+
+  // const { sendReminder } = useDailyReminder(monthlyIncome, monthlyExpenses, dreams, goals);
+
 
   // Mettre à jour forceUpdate quand le thème change
   useEffect(() => {
