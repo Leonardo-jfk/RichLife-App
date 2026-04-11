@@ -751,9 +751,11 @@ const NOTIFICATIONS_ENABLED = "@notifications_enabled";
 
 export function useDailyReminder() {
   const { formatCurrency } = useCurrency();
-
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  //
+  // const notificationListener = useRef<Notifications.Subscription> | null>(null) ;
+  // const responseListener = useRef<Notifications.Subscription> | null>(null);
+  const notificationListener = useRef<Notifications.Subscription | null>(null);
+const responseListener = useRef<Notifications.Subscription | null>(null);
 
   // FIX: Calculer le budget directement et retourner les valeurs
   // au lieu de les stocker dans un state et les lire après setState (stale closure)
