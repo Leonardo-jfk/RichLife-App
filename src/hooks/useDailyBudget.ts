@@ -120,7 +120,7 @@
 
 // src/hooks/useDailyBudget.ts
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../library/supabase";
 import { useAuth } from "../context/AuthContext";
 
 export interface Credit {
@@ -160,9 +160,11 @@ export function useDailyBudget() {
 
       if (txError) throw txError;
 
-      const income = transactions
-        ?.filter((t) => t.type === "income")
-        .reduce((sum, t) => sum + t.amount, 0) || 0;
+      // const income = transactions
+      //   ?.filter((t) => t.type === "income")
+      //   .reduce((sum, t) => sum + t.amount, 0) || 0;
+      const income = transactions?.filter(t => t.type === "income")
+          .reduce((sum: number, t: any) => sum + t.amount, 0) || 0;
 
       const expenses = transactions
         ?.filter((t) => t.type === "expense")

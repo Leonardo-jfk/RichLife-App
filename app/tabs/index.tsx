@@ -836,7 +836,7 @@ import { useLanguage } from "../../src/context/LanguageContext";
 import { useTheme } from "../../src/context/ThemeContext";
 import { useDailyBudget } from "../../src/hooks/useDailyBudget";
 import { useMonthlyStats } from "../../src/hooks/useMonthlyStats";
-import { supabase } from "../../src/lib/supabase";
+import { supabase } from "../../src/library/supabase";
 import { useAuth } from "../../src/context/AuthContext";
 
 export default function HomeScreen() {

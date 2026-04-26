@@ -13,9 +13,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CATEGORIES } from "../src/constants/categories";
-import { COLORS } from "../src/constants/colors";
-import { loadTransactions, saveTransactions } from "../src/utils/storage";
+import { CATEGORIES } from "../../src/constants/categories";
+import { COLORS } from "../../src/constants/colors";
+import { loadTransactions, saveTransactions } from "../../src/utils/storage";
 
 export default function AddTransactionScreen() {
   const router = useRouter();

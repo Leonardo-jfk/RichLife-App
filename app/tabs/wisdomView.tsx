@@ -506,11 +506,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BackgroundImage from "../src/components/BackgroundImage";
-import IslandCard from "../src/components/IslandCard";
-import { useLanguage } from "../src/context/LanguageContext";
-import { useTheme } from "../src/context/ThemeContext";
-import { getQuotes, getCategories, getTags } from "../src/constants/quotes";
+import BackgroundImage from "../../src/components/BackgroundImage";
+import IslandCard from "../../src/components/IslandCard";
+import { useLanguage } from "../../src/context/LanguageContext";
+import { useTheme } from "../../src/context/ThemeContext";
+import { getQuotes, getCategories, getTags } from "../../src/constants/quotes";
 
 // Conseils par situation (traduits)
 const getSituationAdvice = (t: any) => ({

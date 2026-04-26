@@ -16,15 +16,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BackgroundImage from "../src/components/BackgroundImage";
-import IslandCard from "../src/components/IslandCard";
-import { COLORS } from "../src/constants/colors";
-import { CURRENCIES, useCurrency } from "../src/context/CurrencyContext";
-import { useLanguage, AVAILABLE_LANGUAGES } from "../src/context/LanguageContext";
-import { useTheme } from "../src/context/ThemeContext";
-import { useDailyReminder } from "../src/hooks/useDailyReminder";
-import WeeklySummarySettings from "../src/components/WeeklySummarySettings";
-import { translations } from "../src/constants/translations";
+import BackgroundImage from "../../src/components/BackgroundImage";
+import IslandCard from "../../src/components/IslandCard";
+import { COLORS } from "../../src/constants/colors";
+import { CURRENCIES, useCurrency } from "../../src/context/CurrencyContext";
+import { useLanguage, AVAILABLE_LANGUAGES } from "../../src/context/LanguageContext";
+import { useTheme } from "../../src/context/ThemeContext";
+import { useDailyReminder } from "../../src/hooks/useDailyReminder";
+import WeeklySummarySettings from "../../src/components/WeeklySummarySettings";
+import { translations } from "../../src/constants/translations";
 
 
 

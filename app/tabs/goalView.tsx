@@ -2994,11 +2994,11 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import BackgroundImage from "../src/components/BackgroundImage";
-import IslandCard from "../src/components/IslandCard";
-import { useCurrency } from "../src/context/CurrencyContext";
-import { useLanguage } from "../src/context/LanguageContext";
-import { useTheme } from "../src/context/ThemeContext";
+import BackgroundImage from "../../src/components/BackgroundImage";
+import IslandCard from "../../src/components/IslandCard";
+import { useCurrency } from "../../src/context/CurrencyContext";
+import { useLanguage } from "../../src/context/LanguageContext";
+import { useTheme } from "../../src/context/ThemeContext";
 
 const DREAMS_STORAGE = "@finance_app_dreams";
 const GOALS_STORAGE = "@finance_app_goals";
@@ -3749,8 +3749,8 @@ export default function ExploreScreen() {
   const theme = themeContext.theme ?? "light";
   const imageSource =
     theme === "dark"
-      ? require("../assets/images/NeedDark.jpg")
-      : require("../assets/images/NeedLight.jpeg");
+      ? require("../../assets/images/NeedDark.jpg")
+      : require("../../assets/images/NeedLight.jpeg");
 
   return (
     <BackgroundImage imageTheme="default" opacity={0.6} blurRadius={2}>

@@ -93,7 +93,7 @@
 
 // src/hooks/useMonthlyStats.ts
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../library/supabase";
 import { useAuth } from "../context/AuthContext";
 import { useCurrency } from "../context/CurrencyContext";
 
@@ -126,7 +126,9 @@ export function useMonthlyStats() {
         .gte("date", startOfMonth.toISOString())
         .lte("date", endOfMonth.toISOString());
 
-      const income = transactions?.filter(t => t.type === "income").reduce((s, t) => s + t.amount, 0) || 0;
+      // const income = transactions?.filter(t => t.type === "income").reduce((s, t) => s + t.amount, 0) || 0;
+
+      const income = transactions?.filter(t => t.type === "income").reduce((sum: number, t: any) => sum + t.amount, 0) || 0;
       const expenses = transactions?.filter(t => t.type === "expense").reduce((s, t) => s + t.amount, 0) || 0;
       const totalSavings = income - expenses;
 
