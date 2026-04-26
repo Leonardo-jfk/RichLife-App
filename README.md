@@ -129,6 +129,7 @@ During this project, I picked up important skills and gained a deeper understand
 ## 🚀 How Can It Be Improved?
 
 - Add Google/Apple login
+- Add automatic account(upon 1st use), so after verification the data isn't lost 
 - Add data export/import
 - Add offline mode with automatic synchronization
 - Add data sharing between family members
