@@ -12,6 +12,7 @@ import { useAuth } from '../src/context/AuthContext';
 import BackgroundImage from '../src/components/BackgroundImage';
 import { useTheme } from '../src/context/ThemeContext';
 import { useLanguage } from '../src/context/LanguageContext';
+import { translations } from "../src/constants/translations";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

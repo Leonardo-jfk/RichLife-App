@@ -24,7 +24,7 @@ import { useLanguage, AVAILABLE_LANGUAGES } from "../src/context/LanguageContext
 import { useTheme } from "../src/context/ThemeContext";
 import { useDailyReminder } from "../src/hooks/useDailyReminder";
 import WeeklySummarySettings from "../src/components/WeeklySummarySettings";
-
+import { translations } from "../src/constants/translations";
 
 
 
