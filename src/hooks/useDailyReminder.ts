@@ -1027,36 +1027,76 @@ const sendWeeklySummaryNow = async () => {
 
 
 
+  // const registerForPushNotifications = async () => {
+  //   if (!Device.isDevice) {
+  //     console.log("⚠️ Les notifications ne fonctionnent que sur un appareil réel");
+  //     return false;
+  //   }
+
+    // const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    // let finalStatus = existingStatus;
+    //
+    // if (existingStatus !== "granted") {
+    //   const { status } = await Notifications.requestPermissionsAsync();
+    //   finalStatus = status;
+    // }
+
+// const { granted } = await Notifications.getPermissionsAsync();
+// if (!granted) {
+//   const { granted: newGranted } = await Notifications.requestPermissionsAsync();
+//   if (!newGranted) return false;
+// }
+//
+//     if (finalStatus !== "granted") {
+//       console.log("❌ Permissions de notifications refusées");
+//       return false;
+//     }
+//
+//     if (Platform.OS === "android") {
+//       await Notifications.setNotificationChannelAsync("daily_reminder", {
+//         name: "Rappel quotidien",
+//         importance: Notifications.AndroidImportance.HIGH,
+//         vibrationPattern: [0, 250, 250, 250],
+//         sound: "default",
+//       });
+//     }
+//
+//     return true;
+//   };
+
+
+
+
   const registerForPushNotifications = async () => {
-    if (!Device.isDevice) {
-      console.log("⚠️ Les notifications ne fonctionnent que sur un appareil réel");
-      return false;
-    }
+  if (!Device.isDevice) {
+    console.log("⚠️ Les notifications ne fonctionnent que sur un appareil réel");
+    return false;
+  }
 
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
 
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
+  if (existingStatus !== 'granted') {
+    const { status: newStatus } = await Notifications.requestPermissionsAsync();
+    finalStatus = newStatus;
+  }
 
-    if (finalStatus !== "granted") {
-      console.log("❌ Permissions de notifications refusées");
-      return false;
-    }
+  if (finalStatus !== 'granted') {
+    console.log("❌ Permissions de notifications refusées");
+    return false;
+  }
 
-    if (Platform.OS === "android") {
-      await Notifications.setNotificationChannelAsync("daily_reminder", {
-        name: "Rappel quotidien",
-        importance: Notifications.AndroidImportance.HIGH,
-        vibrationPattern: [0, 250, 250, 250],
-        sound: "default",
-      });
-    }
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("daily_reminder", {
+      name: "Rappel quotidien",
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 250, 250, 250],
+      sound: "default",
+    });
+  }
 
-    return true;
-  };
+  return true;
+};
 
   useEffect(() => {
     registerForPushNotifications();
